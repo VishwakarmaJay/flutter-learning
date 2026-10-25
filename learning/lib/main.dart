@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart'; // it import the flutter package
 
-final name = "KK";
+final name = "Jay";
 
 void main() {
   // main function is the entry point of the application.
-  runApp(const Text('Hello Jay')); //runApp is a built-in function in Flutter.
+  runApp(const MainApp()); //runApp is a built-in function in Flutter.
 }
 
 class MainApp extends StatelessWidget {
@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       // MaterialApp is a built-in widget that represents the application.
       home: Scaffold(
-        body: Center(child: Text('Hello $name !')),
+        body: Center(child: Text(name)),
       ), // Scafflod is a built-in widget that provides basic layout. Also Text Widget is a built-in widget that displays text on the screen.
     );
   }

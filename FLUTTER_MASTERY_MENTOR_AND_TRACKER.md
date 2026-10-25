@@ -37,7 +37,7 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 submitted 2026-10-25 — 1 of 6 deliverables complete, 1 partial; resubmission due** (lab record, step b error, section C answer, warm-up, SDK versions, per-line ratings) → then **D0.3** build modes
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** One open debug task: the committed app (`9583fbd` onward) fails on a fresh start and the analyzer can't see why → then **D0.3** build modes
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** nothing yet — the queue rebuilds from the fresh start
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
@@ -250,10 +250,12 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 - [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
 - [~] Explain every line of my own `main.dart` (D0.2: comments added on 9 of 16 lines; most restate the name — "MainApp constructor", "main function" — rather than say what the line does; `const`, `super.key`, `@override`, `extends`, `BuildContext`, `Center` not covered)
 - [ ] Explain debug vs profile vs release mode
-- [ ] Explain hot reload vs hot restart vs a fresh launch (D0.2 issued)
-- [ ] State my SDK versions and where they resolved from
+- [x] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab: text change → `r` works; top-level `final` change → `r` doesn't, `R` needed — matches the docs; full restart not tried)
+- [~] State my SDK versions and where they resolved from (D0.2: Flutter 3.38.3 / Dart 3.10.1 pasted from my own commands ✓; path still not given)
 - [x] Commit the baseline — `2a6c9c5`, 65 files under `learning/` (but committed *after* editing, and the message is inaccurate; see review)
 - [ ] Decide on `.fvmrc` pinning, or record a deliberate no
+- [x] Diagnose a real error: step b `Invalid constant value (invalid_constant)` — exact message, cause (`const MaterialApp` can't contain a `final` value) and fix (drop that `const`), verified with `r`
+- [ ] Diagnose why the committed app (`9583fbd`+) fails on a fresh start although `flutter analyze` reports no issues
 
 Evidence (D0.1): `lib/main.dart` 16 lines, no scaffold comments · `flutter analyze` no issues · format 0 changed · fresh `app-debug.apk` 17:38 after the 17:29 edit
 
@@ -274,9 +276,9 @@ Embedder (native)   Android Activity / iOS UIViewController — owns the window,
 Mastery:
 
 ```text
-[ ] Explain
-[ ] Implement
-[ ] Debug
+[~] Explain    4/5 — D0.1 12/15; D0.2 11/15. The embedder-substitution idea is still missing after two attempts
+[~] Implement  2/5 — first own code: top-level `name` + string interpolation (ed3286b)
+[~] Debug      3/5 — step b error captured, cause found, fixed, verified
 [ ] Apply
 [ ] Defend
 ```
@@ -877,6 +879,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-25 | 1 | D0.2 — hot reload (warm-up, section C, step b) | 11/15 | Warm-up 3/5: put cross-platform down to the engine alone, **missed the per-platform embedder for the second time**, and called the Chrome build native (web compiles Dart to JS/Wasm). Section C 4/5: right conclusion, "already initialized" vague — hot reload doesn't rerun `main()`. Step b 4/5: exact error, cause and working fix; didn't consider `const name` | Embedder substitution re-taught as a side-by-side table; D2 follow-up on `const` |
 | 2026-10-25 | 1 | D0.1 — Dart vs Flutter, four layers | 12/15 (4/5) | Flutter called "a package" — undersells the C++ engine and embedders; Q2 named the right layer but not *why* Chrome works (each platform has its own embedder); Q3 said "Dart VM" without mapping it to the engine layer. **All three questions answered — first completeness pass** | Re-ask the embedder-substitution idea in D0.2 |
 
 ---
@@ -893,6 +896,8 @@ Record the **pattern**, not the individual bug.
 | 2026-09-16 | Answering | Answered only the first portion of a multi-part question | Did not re-check every requested deliverable | Re-read the prompt and verify every part is answered | Ongoing |
 | 2026-10-25 | Answering (**RECURRENCE**) | Twice in one reply: Q1 answered only the `flutter test` clause; Q2 skipped the null-dereference clause. Assignment 0 delivered 2 of 7 criteria | Treats the last or most familiar clause as the whole question; no checklist pass before submitting | Count the prompt's deliverables, answer each explicitly, then re-read and tick them off | **DRILL ACTIVE** — completeness is graded before correctness |
 | 2026-10-25 | Answering (**RECURRENCE ×3**) | D0.2 exercise: 6 deliverables, 1 complete, 1 partial. SDK versions skipped for the **second exercise running**. Reported "done" with 4 deliverables missing | Treats "the code is committed" as "the exercise is done"; written answers (predictions, error message, section C) were never sent | Before saying "done", go down the acceptance-criteria list and point at the evidence for each box. Answers that live in my head or in the IDE don't count until they are pasted | **DRILL ACTIVE** |
+| 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change. `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
+| 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | Re-check in D0.3 and at the D0 close |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | **D1** |
 
 ---
@@ -1106,6 +1111,28 @@ No score: no questions answered.
 
 ### Next session
 - Resubmit D0.2, written in chat: the four lab predictions and results, the step b error, section C, the warm-up, SDK versions, and per-line ratings for the 7 lines not yet covered.
+
+---
+
+## 2026-10-25 (cont.) — D0.2 resubmission
+
+### Deliverables
+All six answered, an improvement on the first submission. Sub-gaps: SDK **path** still missing; lab gave results but no written predictions.
+
+### Implemented (commits ed3286b, 9583fbd, 382d782)
+- First own code: `final name = "Jay";` top-level, used via `'Hello $name!'`. Step b error hit and fixed by removing `const` from `MaterialApp`.
+- **Regression:** `9583fbd` changed `runApp(const MainApp())` to `runApp(const Text('Hello Jay'))`, probably the section C experiment, and committed it under a "comments and formatting" message. `MainApp` and `name` are now dead code. A fresh start fails at **runtime**; `flutter analyze` reports no issues. Left for me to diagnose (debug-first), not revealed.
+- More comments added since the last check: `super.key` (correct: passes the key to the parent class) and `build` "returns a widget tree" (correct, but still not *when* it's called). Not yet covered: `extends`, `@override`, `Widget`/`BuildContext`, `const`, `Center` — these move to D2/D7 and no longer block D0.
+
+### Quiz
+11/15 (warm-up 3 · section C 4 · step b 4).
+
+### Mastery
+Explain 4/5 · Implement 2/5 (first) · Debug 3/5 (first) · Apply — · Defend —
+
+### Next
+- Predict, then run `R` on the committed code; diagnose and fix the fresh-start failure; commit with an accurate message.
+- Then D0.3: build modes.
 
 ---
 
