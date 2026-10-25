@@ -37,7 +37,8 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** ✅ **D0.2 closed** (`d7fe14f`) · 🔄 **D0.3 submitted** — 3 of 7 complete, 3 partial, 1 missing (`kReleaseMode` change uncommitted) · next: finish D0.3, then the **D0 close-out** (embedder, `flutter run` walkthrough, why release has no hot reload, `.fvmrc`, SDK path) → D1
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** ✅ **D0.2 closed** (`d7fe14f`) · ✅ **D0.3 closed** (`deb1753`) · 🔄 **D0 close-out issued** — 4 scenario questions + SDK path + `.fvmrc` decision → then **D1**
+**Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** hot reload vs hot restart — corrected in the D0.3 warm-up (5/5); recheck about 3 sessions later · per-platform embedder (missed twice) · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
@@ -249,7 +250,7 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 - [~] Explain which layer fails when an Android build fails but Chrome succeeds (embedder ✓; "Chrome has its own embedder" missing)
 - [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
 - [~] Explain every line of my own `main.dart` (D0.2: comments added on 9 of 16 lines; most restate the name — "MainApp constructor", "main function" — rather than say what the line does; `const`, `super.key`, `@override`, `extends`, `BuildContext`, `Center` not covered)
-- [~] Explain debug vs profile vs release mode (D0.3: release is smaller and has no hot reload — `r` missing from the release key-command list; **why** not yet explained; profile not tried)
+- [x] Explain debug vs profile vs release mode (D0.3: release smaller, no hot reload — `r` absent from the key-command list; why: debug ships the VM and debugging support, release is compiled machine code; debug banner seen only in debug. Profile not run — that belongs to P2)
 - [x] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab correct; D0.2 follow-up swapped them; **D0.3 warm-up 5/5**: a global change needs `R` because `main()` must run again, and it's not a native rerun either)
 - [~] State my SDK versions and where they resolved from (D0.2: Flutter 3.38.3 / Dart 3.10.1 pasted from my own commands ✓; path still not given)
 - [x] Commit the baseline — `2a6c9c5`, 65 files under `learning/` (but committed *after* editing, and the message is inaccurate; see review)
@@ -879,6 +880,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-25 | 1 | D0.3 — finish (size reason, on-screen result) | 8/10 | Q1 4/5: debug carries the VM and debugger ✓, but "release only carries the code" forgets the 10.6 MB engine just measured in its own APK. Q2 4/5: spotted the DEBUG banner unprompted ✓; didn't report the `kReleaseMode: false/true` text | — |
 | 2026-10-25 | 1 | D0.3 — build modes (warm-up, section C) | 7/10 | Warm-up 5/5: reload vs restart now right, including that restart is not a native rerun. Section C 2/5: answered "don't ship bugs" but missed the point — a release build shows a **gray screen with no message**, so the bug is silent for the user *and* for me | Crash reporting (P8) is the answer to silent release failures |
 | 2026-10-25 | 1 | D0.2 — fresh-start bug follow-up | 5/10 | Q1 3/5: "runtime issue" is the right category but no mechanism (the analyzer never builds the widget tree). Q2 2/5: "MainApp returns the widget tree" is partly right but `MaterialApp` isn't named; then **swapped hot reload and hot restart**, contradicting my own lab | Reload/restart is the D0.3 warm-up |
 | 2026-10-25 | 1 | D0.2 — hot reload (warm-up, section C, step b) | 11/15 | Warm-up 3/5: put cross-platform down to the engine alone, **missed the per-platform embedder for the second time**, and called the Chrome build native (web compiles Dart to JS/Wasm). Section C 4/5: right conclusion, "already initialized" vague — hot reload doesn't rerun `main()`. Step b 4/5: exact error, cause and working fix; didn't consider `const name` | Embedder substitution re-taught as a side-by-side table; D2 follow-up on `const` |
@@ -931,6 +933,7 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 | 2026-10-25 | Project deps | `learning/pubspec.yaml`: Dart `^3.10.1`, `cupertino_icons ^1.0.8`, `flutter_lints ^6.0.0`. 9 transitive packages held below latest by the SDK constraint — expected, not a defect | First third-party dependency |
 | 2026-10-25 | Hot reload / build modes | Per docs.flutter.dev (fetched today): hot reload rebuilds the widget tree and does **not** rerun `main()` or `initState()`; globals and static fields are state and are not reinitialized; hot reload works only in debug mode; profile mode is disabled on emulators/simulators; release mode is not supported on mobile emulators/simulators | Flutter SDK upgrade |
 | 2026-10-25 | Compilation & error screens | Architectural overview: during development apps "run in a VM that offers stateful hot reload"; for release they are "compiled directly to machine code" (x64/ARM), or JS/Wasm on web (`dart2js`/`dart2wasm`; `dartdevc` in development). Errors doc: a build-phase `ErrorWidget` shows "an error message in red" in debug and "a gray background" in release; `kReleaseMode` is a top-level constant. `learning/android/app/build.gradle.kts` signs release builds with the **debug key** (template TODO), so they're fine locally and unusable for a store | Flutter upgrade, or when a real signing config is added (P7) |
+| 2026-10-25 | FVM | FVM 4.1.2. `fvm use <version>` creates `.fvmrc` (the project's Flutter version) and a `.fvm/` symlink folder; docs recommend gitignoring `.fvm/` (done automatically when `updateGitIgnore` is true, the default) | FVM major upgrade |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1189,6 +1192,22 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — unchanged; the warm-up gain is bal
 
 ### Next
 - Finish D0.3: the reason for the size difference, what each mode showed on screen, commit. Then the D0 close-out.
+
+---
+
+## 2026-10-25 (cont.) — D0.3 closed
+
+- `deb1753` "Update main.dart to display kReleaseMode and name in greeting message" — **accurate** (the tracker file rode along unmentioned, which is fine).
+- Q1 4/5 · Q2 4/5. Noticed the DEBUG banner on my own.
+- Next: D0 close-out (embedder substitution, `flutter run` walkthrough, SDK path, `.fvmrc`), then D1.
+
+---
+
+## 2026-10-25 (cont.) — D0 notes + close-out issued
+
+- Created `notes/D0-toolchain-and-first-run.md` on my request: 10 topics, each with what / why it matters / what I saw, plus my own measurements, commands and a mistakes table. This is the first file Claude wrote outside the tracker, authorized explicitly; it's study notes, not app code. Not committed — mine to commit.
+- Close-out questions are **new scenarios** (iOS, macOS, a different failure), so the notes can't be copied straight in; answer from memory first.
+- Verified: FVM 4.1.2 installed; `fvm use <version>` creates `.fvmrc` and `.fvm/`; FVM recommends gitignoring `.fvm/` (fvm.app configuration docs).
 
 ---
 
