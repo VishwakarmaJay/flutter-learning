@@ -1,16 +1,22 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // it import the flutter package
 
 void main() {
-  runApp(const MainApp());
+  // main function
+  runApp(const MainApp()); //runApp is a built-in function in Flutter.
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  // MainApp is a stateless widget that represents the main application.
+  const MainApp({super.key}); // MainApp constructor.
 
   @override
   Widget build(BuildContext context) {
+    // build method is called when the widget is built.
     return const MaterialApp(
-      home: Scaffold(body: Center(child: Text('JAY'))),
+      // MaterialApp is a built-in widget that represents the application.
+      home: Scaffold(
+        body: Center(child: Text('Hello World')),
+      ), // Scafflod is a built-in widget that provides basic layout. Also Text Widget is a built-in widget that displays text on the screen.
     );
   }
 }

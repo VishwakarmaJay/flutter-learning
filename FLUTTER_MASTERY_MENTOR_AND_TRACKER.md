@@ -37,7 +37,7 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** ← fresh start · then D1 running Dart code
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 issued** — hot reload vs hot restart vs full restart · `main.dart` self-rating · SDK versions → then **D0.3** build modes (debug/profile/release)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** nothing yet — the queue rebuilds from the fresh start
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
@@ -243,18 +243,21 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 
 **Learning tasks** — all reset to zero:
 
-- [ ] Explain what Dart is, and what Flutter is, in my own words
-- [ ] Explain the four layers: my code → framework → engine → embedder
+- [x] Explain what Dart is, and what Flutter is, in my own words (D0.1 Q1 — 4/5; "package" undersells the engine)
+- [~] Explain the four layers: my code → framework → engine → embedder (used correctly in Q2/Q3; not yet stated whole)
 - [ ] Explain what actually happens when I run `flutter run`
-- [ ] Explain which layer fails when an Android build fails but Chrome succeeds
-- [ ] Explain why `flutter test` needs no emulator
+- [~] Explain which layer fails when an Android build fails but Chrome succeeds (embedder ✓; "Chrome has its own embedder" missing)
+- [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
+- [ ] Explain every line of my own `main.dart` (it matches the `flutter create --empty` template with one string changed)
 - [ ] Explain debug vs profile vs release mode
-- [ ] Explain hot reload vs hot restart vs a fresh launch
+- [ ] Explain hot reload vs hot restart vs a fresh launch (D0.2 issued)
 - [ ] State my SDK versions and where they resolved from
-- [ ] Commit the baseline (`learning/` is still untracked)
+- [x] Commit the baseline — `2a6c9c5`, 65 files under `learning/` (but committed *after* editing, and the message is inaccurate; see review)
 - [ ] Decide on `.fvmrc` pinning, or record a deliberate no
 
-Remaining before DONE: every learning task above
+Evidence (D0.1): `lib/main.dart` 16 lines, no scaffold comments · `flutter analyze` no issues · format 0 changed · fresh `app-debug.apk` 17:38 after the 17:29 edit
+
+Remaining before DONE: explain each line of `main.dart` · `flutter run` walkthrough · debug/profile/release · hot reload vs restart · state SDK versions + path (**skipped in D0.1**) · `.fvmrc` decision · a deliberate failure diagnosed
 
 The four-layer model taught 2026-10-25:
 
@@ -874,7 +877,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
-| _(empty — first quiz of the fresh start goes here)_ | | | | | |
+| 2026-10-25 | 1 | D0.1 — Dart vs Flutter, four layers | 12/15 (4/5) | Flutter called "a package" — undersells the C++ engine and embedders; Q2 named the right layer but not *why* Chrome works (each platform has its own embedder); Q3 said "Dart VM" without mapping it to the engine layer. **All three questions answered — first completeness pass** | Re-ask the embedder-substitution idea in D0.2 |
 
 ---
 
@@ -916,6 +919,7 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 |---|---|---|---|
 | 2026-10-25 | Installed SDK | Flutter 3.38.3 stable (framework `19074d12f7`, engine `13e658725d`), Dart 3.10.1, DevTools 2.51.1, macOS 15.7.9 arm64. Resolved via FVM global default `~/fvm/default` → `~/fvm/versions/3.38.3`. No project `.fvmrc`. A newer stable exists and was deliberately **not** installed | Any `flutter upgrade`, or when a `.fvmrc` pin is added |
 | 2026-10-25 | Project deps | `learning/pubspec.yaml`: Dart `^3.10.1`, `cupertino_icons ^1.0.8`, `flutter_lints ^6.0.0`. 9 transitive packages held below latest by the SDK constraint — expected, not a defect | First third-party dependency |
+| 2026-10-25 | Hot reload / build modes | Per docs.flutter.dev (fetched today): hot reload rebuilds the widget tree and does **not** rerun `main()` or `initState()`; globals and static fields are state and are not reinitialized; hot reload works only in debug mode; profile mode is disabled on emulators/simulators; release mode is not supported on mobile emulators/simulators | Flutter SDK upgrade |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1045,6 +1049,31 @@ Score: 2/5. Q1 — 1 of 3 clauses; the `flutter test` / embedder reasoning was c
 
 ### Next session
 - D0 unit 1 — what Dart and Flutter actually are, and what runs my code.
+
+---
+
+## 2026-10-25 (cont.) — D0.1 review
+
+### Learned
+- Dart vs Flutter; Flutter paints every pixel itself; the four layers; what `flutter run` does step by step.
+
+### Implemented
+- Replaced the 122-line counter scaffold with a 16-line app showing "JAY"; `test/` removed (the default test referenced the deleted `MyApp`). Committed as `2a6c9c5`.
+
+### Quiz
+Score: 12/15 — Q1 4/5 · Q2 4/5 · Q3 4/5. **All three answered: first completeness pass.**
+
+### Review
+- P2: `main.dart` is the `flutter create --empty` template (`templates/app/lib/main.dart.tmpl`) with `'Hello World!'` → `'JAY'`. Not wrong, but it doesn't prove I can write it — so `Implement` stays unticked until I can explain every line.
+- P2: SDK versions + path not reported — 1 of 5 exercise criteria skipped (completeness, again on the exercise rather than the questions).
+- P2: Edited `main.dart` at 17:29:45, committed at 17:30:20 — the scaffold was never captured in git, which was the reason for "commit first".
+- P2: Commit message "Add initial iOS project structure and assets" describes none of the 67 files: it bundled the Flutter project, the slimmed `main.dart` and the tracker restructure.
+
+### Mastery
+- [~] Explain 4/5  [ ] Implement  [ ] Debug  [ ] Apply  [ ] Defend
+
+### Next session
+- D0.2 — line-by-line explanation of `main.dart`, SDK versions, debug/profile/release, hot reload vs restart.
 
 ---
 
