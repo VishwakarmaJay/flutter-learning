@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'; // it import the flutter package
 
-final name = "Jay";
+final name = "KK";
 
 void main() {
   // main function is the entry point of the application.
