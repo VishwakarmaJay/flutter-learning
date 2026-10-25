@@ -37,9 +37,9 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** One open debug task: the committed app (`9583fbd` onward) fails on a fresh start and the analyzer can't see why → then **D0.3** build modes
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** ✅ **D0.2 closed** (fix committed `d7fe14f`) · next: **D0.3** build modes — open it with the reload-vs-restart warm-up (a physical Android phone is available, so profile/release can run for real)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** nothing yet — the queue rebuilds from the fresh start
+**Revise (spaced):** hot reload vs hot restart — the D0.2 lab got it right, but the follow-up explanation swapped them (warm-up for D0.3) · per-platform embedder (missed twice) · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
@@ -250,12 +250,12 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 - [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
 - [~] Explain every line of my own `main.dart` (D0.2: comments added on 9 of 16 lines; most restate the name — "MainApp constructor", "main function" — rather than say what the line does; `const`, `super.key`, `@override`, `extends`, `BuildContext`, `Center` not covered)
 - [ ] Explain debug vs profile vs release mode
-- [x] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab: text change → `r` works; top-level `final` change → `r` doesn't, `R` needed — matches the docs; full restart not tried)
+- [~] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab results correct: text change → `r` works; top-level `final` change → `r` doesn't, `R` needed. **But the later explanation swapped them**, claiming hot restart keeps the old value. Downgraded until re-checked)
 - [~] State my SDK versions and where they resolved from (D0.2: Flutter 3.38.3 / Dart 3.10.1 pasted from my own commands ✓; path still not given)
 - [x] Commit the baseline — `2a6c9c5`, 65 files under `learning/` (but committed *after* editing, and the message is inaccurate; see review)
 - [ ] Decide on `.fvmrc` pinning, or record a deliberate no
 - [x] Diagnose a real error: step b `Invalid constant value (invalid_constant)` — exact message, cause (`const MaterialApp` can't contain a `final` value) and fix (drop that `const`), verified with `r`
-- [ ] Diagnose why the committed app (`9583fbd`+) fails on a fresh start although `flutter analyze` reports no issues
+- [x] Diagnose why the committed app (`9583fbd`+) fails on a fresh start — exact error captured, fixed, committed (`d7fe14f`). Explanations partial: "it was a runtime issue" (a label, not the mechanism); didn't name `MaterialApp` as the provider of `Directionality`
 
 Evidence (D0.1): `lib/main.dart` 16 lines, no scaffold comments · `flutter analyze` no issues · format 0 changed · fresh `app-debug.apk` 17:38 after the 17:29 edit
 
@@ -879,6 +879,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-25 | 1 | D0.2 — fresh-start bug follow-up | 5/10 | Q1 3/5: "runtime issue" is the right category but no mechanism (the analyzer never builds the widget tree). Q2 2/5: "MainApp returns the widget tree" is partly right but `MaterialApp` isn't named; then **swapped hot reload and hot restart**, contradicting my own lab | Reload/restart is the D0.3 warm-up |
 | 2026-10-25 | 1 | D0.2 — hot reload (warm-up, section C, step b) | 11/15 | Warm-up 3/5: put cross-platform down to the engine alone, **missed the per-platform embedder for the second time**, and called the Chrome build native (web compiles Dart to JS/Wasm). Section C 4/5: right conclusion, "already initialized" vague — hot reload doesn't rerun `main()`. Step b 4/5: exact error, cause and working fix; didn't consider `const name` | Embedder substitution re-taught as a side-by-side table; D2 follow-up on `const` |
 | 2026-10-25 | 1 | D0.1 — Dart vs Flutter, four layers | 12/15 (4/5) | Flutter called "a package" — undersells the C++ engine and embedders; Q2 named the right layer but not *why* Chrome works (each platform has its own embedder); Q3 said "Dart VM" without mapping it to the engine layer. **All three questions answered — first completeness pass** | Re-ask the embedder-substitution idea in D0.2 |
 
@@ -898,6 +899,7 @@ Record the **pattern**, not the individual bug.
 | 2026-10-25 | Answering (**RECURRENCE ×3**) | D0.2 exercise: 6 deliverables, 1 complete, 1 partial. SDK versions skipped for the **second exercise running**. Reported "done" with 4 deliverables missing | Treats "the code is committed" as "the exercise is done"; written answers (predictions, error message, section C) were never sent | Before saying "done", go down the acceptance-criteria list and point at the evidence for each box. Answers that live in my head or in the IDE don't count until they are pasted | **DRILL ACTIVE** |
 | 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change. `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
 | 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | Re-check in D0.3 and at the D0 close |
+| 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | D0.3 warm-up |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | **D1** |
 
 ---
@@ -1133,6 +1135,39 @@ Explain 4/5 · Implement 2/5 (first) · Debug 3/5 (first) · Apply — · Defend
 ### Next
 - Predict, then run `R` on the committed code; diagnose and fix the fresh-start failure; commit with an accurate message.
 - Then D0.3: build modes.
+
+---
+
+## 2026-10-25 (cont.) — Fresh-start bug
+
+### Result: 2 of 5 deliverables
+- Prediction: **missing**. It can't be done honestly any more, since the error has been seen, so it's waived.
+- Exact error: ✅ screenshot from a physical Android phone — *No Directionality widget found. RichText widgets require a Directionality widget ancestor…*
+- Why the analyzer missed it: **missing**
+- Fix: ✅ restored `runApp(const MainApp())`, which is the fix the error message itself points to (`MaterialApp` provides `Directionality`). Also changed `name` back to "Jay" and the text to just `Text(name)`.
+- Commit: **missing**. Working tree modified, last commit is still the broken `382d782`.
+
+### Note
+- Reading the error and applying what it says is the right instinct. The message named `MaterialApp` as the usual source of `Directionality`.
+- First run on a **physical Android phone** confirmed from the screenshot.
+
+### Next
+- Two one-line answers (why the analyzer can't see it; why `MainApp` fixes it), then commit, then D0.3.
+
+---
+
+## 2026-10-25 (cont.) — D0.2 close-out
+
+### Result
+- Commit `d7fe14f` "Revert name variable in main.dart to "Jay" and restore MainApp as the entry point" — **the first commit message that describes its behaviour change.** Small nit: `main()` is the entry point; `MainApp` is the root widget.
+- Q1 3/5 · Q2 2/5 — see Quiz History.
+- New mistake: hot reload and hot restart swapped in the explanation even though the lab had them right. Re-taught as a side-by-side table tied to my own steps c and d.
+
+### Mastery (D0)
+Explain 4/5 · Implement 2/5 · Debug 3/5 — no change; the explanation gaps above stop Explain going higher.
+
+### Next
+- D0.3 build modes, opening with the reload-vs-restart warm-up.
 
 ---
 
