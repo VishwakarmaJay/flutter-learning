@@ -37,7 +37,7 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 issued** — hot reload vs hot restart vs full restart · `main.dart` self-rating · SDK versions → then **D0.3** build modes (debug/profile/release)
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 submitted 2026-10-25 — 1 of 6 deliverables complete, 1 partial; resubmission due** (lab record, step b error, section C answer, warm-up, SDK versions, per-line ratings) → then **D0.3** build modes
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** nothing yet — the queue rebuilds from the fresh start
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
@@ -248,7 +248,7 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 - [ ] Explain what actually happens when I run `flutter run`
 - [~] Explain which layer fails when an Android build fails but Chrome succeeds (embedder ✓; "Chrome has its own embedder" missing)
 - [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
-- [ ] Explain every line of my own `main.dart` (it matches the `flutter create --empty` template with one string changed)
+- [~] Explain every line of my own `main.dart` (D0.2: comments added on 9 of 16 lines; most restate the name — "MainApp constructor", "main function" — rather than say what the line does; `const`, `super.key`, `@override`, `extends`, `BuildContext`, `Center` not covered)
 - [ ] Explain debug vs profile vs release mode
 - [ ] Explain hot reload vs hot restart vs a fresh launch (D0.2 issued)
 - [ ] State my SDK versions and where they resolved from
@@ -892,6 +892,7 @@ Record the **pattern**, not the individual bug.
 | 2026-09-16 | Variables | Treated a variable as a container in every case | Overgeneralized a simple analogy | A variable is a binding; several bindings can reference one object | D2 |
 | 2026-09-16 | Answering | Answered only the first portion of a multi-part question | Did not re-check every requested deliverable | Re-read the prompt and verify every part is answered | Ongoing |
 | 2026-10-25 | Answering (**RECURRENCE**) | Twice in one reply: Q1 answered only the `flutter test` clause; Q2 skipped the null-dereference clause. Assignment 0 delivered 2 of 7 criteria | Treats the last or most familiar clause as the whole question; no checklist pass before submitting | Count the prompt's deliverables, answer each explicitly, then re-read and tick them off | **DRILL ACTIVE** — completeness is graded before correctness |
+| 2026-10-25 | Answering (**RECURRENCE ×3**) | D0.2 exercise: 6 deliverables, 1 complete, 1 partial. SDK versions skipped for the **second exercise running**. Reported "done" with 4 deliverables missing | Treats "the code is committed" as "the exercise is done"; written answers (predictions, error message, section C) were never sent | Before saying "done", go down the acceptance-criteria list and point at the evidence for each box. Answers that live in my head or in the IDE don't count until they are pasted | **DRILL ACTIVE** |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | **D1** |
 
 ---
@@ -905,6 +906,7 @@ Record the **pattern**, not the individual bug.
 | P2 | Source control | `learning/` is untracked; the baseline is not committed | Assignment 0 exists to create a *reproducible* baseline; an uncommitted one cannot be returned to | D1 | ⚠️ OPEN — `git add -n` dry run confirms 66 files, zero leaks from `build/`, `.dart_tool/`, `.idea/` |
 | P2 | Toolchain | No `.fvmrc`; Flutter resolves via the FVM global default | `pubspec.yaml` pins the Dart constraint but nothing pins the Flutter SDK — `flutter upgrade` would silently move the project | D1 | ⚠️ OPEN — decision due |
 | P2 | Project | `learning/` is still the untouched `flutter create` scaffold | No learner-written Dart exists yet | D1 | OPEN |
+| P3 | Source control | `.DS_Store` committed at the repo root; no root `.gitignore` | macOS junk in history; it will show up as noise in every diff | D0.2 | OPEN — add a root `.gitignore` and untrack it |
 | P1 | Backend contract | No refresh-token endpoint | Flutter must log the user out on expiry until it exists | Backend Phase Q → then F14 | OPEN (upstream) |
 | P2 | Backend contract | CORS allows only `http://localhost:4200` | Blocks a Flutter **Web** client; irrelevant for Android/iOS | F10 | OPEN (upstream) |
 | P1 | Releases | No repeatable signed build or patch policy | Prevents risky production delivery | P7 | NOT STARTED |
@@ -1074,6 +1076,36 @@ Score: 12/15 — Q1 4/5 · Q2 4/5 · Q3 4/5. **All three answered: first complet
 
 ### Next session
 - D0.2 — line-by-line explanation of `main.dart`, SDK versions, debug/profile/release, hot reload vs restart.
+
+---
+
+## 2026-10-25 (cont.) — D0.2 hot reload: first submission
+
+### Learned (taught)
+- Hot reload vs hot restart vs full restart; hot reload does not rerun `main()` or `initState()`; globals are state. Bridge: `bun --watch` is a restart, not a reload. Verified against docs.flutter.dev.
+
+### Implemented
+- `db16d35`: comments added to `main.dart`; on-screen text changed from `'JAY'` back to `'Hello World'`. No top-level variable in the committed code, so the step b fix isn't visible.
+
+### Deliverables (6)
+1. Per-line ratings: **partial**. Comments instead of Know/Guess/No-idea ratings; 9 of 16 lines covered; mostly restate the name. One contradicts D0.1: "runApp is a built-in function" (it's an ordinary function from the widgets library). "build method is called when the widget is built" is circular.
+2. SDK versions + path: **missing** (second time).
+3. Hot-reload lab predictions and results: **missing**. Not in the terminal panel either (checked).
+4. Step b error message, cause and fix: **missing**.
+5. Section C answer: **missing**. Warm-up question also unanswered.
+6. Commit: **half**. Committed, but "Refactor" is wrong (no behaviour-preserving restructure happened) and the message leaves out the visible text change.
+
+### Quiz
+No score: no questions answered.
+
+### Mastery
+- No change. Explain 4/5 from D0.1 stands. Implement and Debug stay unticked.
+
+### Technical debt found
+- `.DS_Store` tracked; no root `.gitignore`.
+
+### Next session
+- Resubmit D0.2, written in chat: the four lab predictions and results, the step b error, section C, the warm-up, SDK versions, and per-line ratings for the 7 lines not yet covered.
 
 ---
 
