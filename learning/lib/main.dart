@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // it import the flutter package
 
 final name = "Jay";
@@ -19,7 +20,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       // MaterialApp is a built-in widget that represents the application.
       home: Scaffold(
-        body: Center(child: Text(name)),
+        body: Center(child: Text("kReleaseMode: $kReleaseMode, name: $name")),
       ), // Scafflod is a built-in widget that provides basic layout. Also Text Widget is a built-in widget that displays text on the screen.
     );
   }

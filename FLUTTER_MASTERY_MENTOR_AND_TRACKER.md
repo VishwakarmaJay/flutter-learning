@@ -37,9 +37,9 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** ✅ **D0.2 closed** (fix committed `d7fe14f`) · next: **D0.3** build modes — open it with the reload-vs-restart warm-up (a physical Android phone is available, so profile/release can run for real)
+**Topic:** 🔄 **D0 — toolchain & first run** · D0.1 done (12/15) · 🔄 **D0.2 resubmitted — 11/15; all six answered.** ✅ **D0.2 closed** (`d7fe14f`) · 🔄 **D0.3 submitted** — 3 of 7 complete, 3 partial, 1 missing (`kReleaseMode` change uncommitted) · next: finish D0.3, then the **D0 close-out** (embedder, `flutter run` walkthrough, why release has no hot reload, `.fvmrc`, SDK path) → D1
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** hot reload vs hot restart — the D0.2 lab got it right, but the follow-up explanation swapped them (warm-up for D0.3) · per-platform embedder (missed twice) · why an error is runtime, by mechanism rather than label
+**Revise (spaced):** hot reload vs hot restart — corrected in the D0.3 warm-up (5/5); recheck about 3 sessions later · per-platform embedder (missed twice) · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
@@ -249,8 +249,8 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 - [~] Explain which layer fails when an Android build fails but Chrome succeeds (embedder ✓; "Chrome has its own embedder" missing)
 - [x] Explain why `flutter test` needs no emulator (D0.1 Q3 — skips the embedder ✓)
 - [~] Explain every line of my own `main.dart` (D0.2: comments added on 9 of 16 lines; most restate the name — "MainApp constructor", "main function" — rather than say what the line does; `const`, `super.key`, `@override`, `extends`, `BuildContext`, `Center` not covered)
-- [ ] Explain debug vs profile vs release mode
-- [~] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab results correct: text change → `r` works; top-level `final` change → `r` doesn't, `R` needed. **But the later explanation swapped them**, claiming hot restart keeps the old value. Downgraded until re-checked)
+- [~] Explain debug vs profile vs release mode (D0.3: release is smaller and has no hot reload — `r` missing from the release key-command list; **why** not yet explained; profile not tried)
+- [x] Explain hot reload vs hot restart vs a fresh launch (D0.2 lab correct; D0.2 follow-up swapped them; **D0.3 warm-up 5/5**: a global change needs `R` because `main()` must run again, and it's not a native rerun either)
 - [~] State my SDK versions and where they resolved from (D0.2: Flutter 3.38.3 / Dart 3.10.1 pasted from my own commands ✓; path still not given)
 - [x] Commit the baseline — `2a6c9c5`, 65 files under `learning/` (but committed *after* editing, and the message is inaccurate; see review)
 - [ ] Decide on `.fvmrc` pinning, or record a deliberate no
@@ -879,6 +879,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-25 | 1 | D0.3 — build modes (warm-up, section C) | 7/10 | Warm-up 5/5: reload vs restart now right, including that restart is not a native rerun. Section C 2/5: answered "don't ship bugs" but missed the point — a release build shows a **gray screen with no message**, so the bug is silent for the user *and* for me | Crash reporting (P8) is the answer to silent release failures |
 | 2026-10-25 | 1 | D0.2 — fresh-start bug follow-up | 5/10 | Q1 3/5: "runtime issue" is the right category but no mechanism (the analyzer never builds the widget tree). Q2 2/5: "MainApp returns the widget tree" is partly right but `MaterialApp` isn't named; then **swapped hot reload and hot restart**, contradicting my own lab | Reload/restart is the D0.3 warm-up |
 | 2026-10-25 | 1 | D0.2 — hot reload (warm-up, section C, step b) | 11/15 | Warm-up 3/5: put cross-platform down to the engine alone, **missed the per-platform embedder for the second time**, and called the Chrome build native (web compiles Dart to JS/Wasm). Section C 4/5: right conclusion, "already initialized" vague — hot reload doesn't rerun `main()`. Step b 4/5: exact error, cause and working fix; didn't consider `const name` | Embedder substitution re-taught as a side-by-side table; D2 follow-up on `const` |
 | 2026-10-25 | 1 | D0.1 — Dart vs Flutter, four layers | 12/15 (4/5) | Flutter called "a package" — undersells the C++ engine and embedders; Q2 named the right layer but not *why* Chrome works (each platform has its own embedder); Q3 said "Dart VM" without mapping it to the engine layer. **All three questions answered — first completeness pass** | Re-ask the embedder-substitution idea in D0.2 |
@@ -897,9 +898,9 @@ Record the **pattern**, not the individual bug.
 | 2026-09-16 | Answering | Answered only the first portion of a multi-part question | Did not re-check every requested deliverable | Re-read the prompt and verify every part is answered | Ongoing |
 | 2026-10-25 | Answering (**RECURRENCE**) | Twice in one reply: Q1 answered only the `flutter test` clause; Q2 skipped the null-dereference clause. Assignment 0 delivered 2 of 7 criteria | Treats the last or most familiar clause as the whole question; no checklist pass before submitting | Count the prompt's deliverables, answer each explicitly, then re-read and tick them off | **DRILL ACTIVE** — completeness is graded before correctness |
 | 2026-10-25 | Answering (**RECURRENCE ×3**) | D0.2 exercise: 6 deliverables, 1 complete, 1 partial. SDK versions skipped for the **second exercise running**. Reported "done" with 4 deliverables missing | Treats "the code is committed" as "the exercise is done"; written answers (predictions, error message, section C) were never sent | Before saying "done", go down the acceptance-criteria list and point at the evidence for each box. Answers that live in my head or in the IDE don't count until they are pasted | **DRILL ACTIVE** |
-| 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change. `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
+| 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change (update D0.3: `79b9a45` "Fix fresh-start bug by restoring runApp…" contains **only the tracker file** — the runApp fix was already in `d7fe14f`; 4 of 6 now mislabelled). `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
 | 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | Re-check in D0.3 and at the D0 close |
-| 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | D0.3 warm-up |
+| 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | ✅ Corrected in the D0.3 warm-up (5/5). Recheck about 3 sessions later before retiring |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | **D1** |
 
 ---
@@ -929,6 +930,7 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 | 2026-10-25 | Installed SDK | Flutter 3.38.3 stable (framework `19074d12f7`, engine `13e658725d`), Dart 3.10.1, DevTools 2.51.1, macOS 15.7.9 arm64. Resolved via FVM global default `~/fvm/default` → `~/fvm/versions/3.38.3`. No project `.fvmrc`. A newer stable exists and was deliberately **not** installed | Any `flutter upgrade`, or when a `.fvmrc` pin is added |
 | 2026-10-25 | Project deps | `learning/pubspec.yaml`: Dart `^3.10.1`, `cupertino_icons ^1.0.8`, `flutter_lints ^6.0.0`. 9 transitive packages held below latest by the SDK constraint — expected, not a defect | First third-party dependency |
 | 2026-10-25 | Hot reload / build modes | Per docs.flutter.dev (fetched today): hot reload rebuilds the widget tree and does **not** rerun `main()` or `initState()`; globals and static fields are state and are not reinitialized; hot reload works only in debug mode; profile mode is disabled on emulators/simulators; release mode is not supported on mobile emulators/simulators | Flutter SDK upgrade |
+| 2026-10-25 | Compilation & error screens | Architectural overview: during development apps "run in a VM that offers stateful hot reload"; for release they are "compiled directly to machine code" (x64/ARM), or JS/Wasm on web (`dart2js`/`dart2wasm`; `dartdevc` in development). Errors doc: a build-phase `ErrorWidget` shows "an error message in red" in debug and "a gray background" in release; `kReleaseMode` is a top-level constant. `learning/android/app/build.gradle.kts` signs release builds with the **debug key** (template TODO), so they're fine locally and unusable for a store | Flutter upgrade, or when a real signing config is added (P7) |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1168,6 +1170,25 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — no change; the explanation gaps ab
 
 ### Next
 - D0.3 build modes, opening with the reload-vs-restart warm-up.
+
+---
+
+## 2026-10-25 (cont.) — D0.3 build modes: submission
+
+### Deliverables (7)
+1. Warm-up: ✅ 5/5 — reload/restart mix-up corrected.
+2. Predictions before running: ⚠️ size given (debug larger); no `r` prediction.
+3. APK sizes: ⚠️ debug 149 MB, release 40 MB reported; **no reason given**. Can't be checked on disk any more: a later `flutter run --release` replaced it with a 14.2 MB **arm64-only** APK (`libflutter.so` 10.6 MB engine + `libapp.so` 2.7 MB my code and framework). 40 MB ≈ 3 CPU ABIs × ~13.3 MB, so the reported figure fits a fat `flutter build apk`.
+4. Release + `r`: ✅ the release key-command list shows only `h`, `c`, `q` — no reload or restart exists.
+5. Mode on screen: ⚠️ code done (`Text("kReleaseMode: $kReleaseMode, name: $name")`) but what appeared in each mode wasn't reported. Redundant `import 'package:flutter/foundation.dart'` (`material.dart` already exports it); analyzer clean.
+6. Section C: ⚠️ 2/5.
+7. Commit: ❌ the `kReleaseMode` change is uncommitted. Also `79b9a45`'s message claims the runApp fix but holds only the tracker.
+
+### Mastery (D0)
+Explain 4/5 · Implement 2/5 · Debug 3/5 — unchanged; the warm-up gain is balanced by the section C gap.
+
+### Next
+- Finish D0.3: the reason for the size difference, what each mode showed on screen, commit. Then the D0 close-out.
 
 ---
 
