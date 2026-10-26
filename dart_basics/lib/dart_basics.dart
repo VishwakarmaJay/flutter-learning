@@ -12,4 +12,17 @@ List<int> divideBySeven() {
   return result;
 }
 
+int pickRating(List<int> ratings, int index) {
+  return ratings[index]; // line 2
+}
+
+int bestRating(List<int> ratings) {
+  return pickRating(ratings, ratings.length - 1); // line 6
+}
+
+void main() {
+  print('start');
+  print(bestRating([3, 5, 4])); // line 11
+}
+
 // int x = "Hello, Dart!";
