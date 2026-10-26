@@ -37,11 +37,11 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ **D0 DONE** (2026-10-26 · close-out 16/20) · 🔄 **D1.1 issued** — compiler vs runtime, JIT vs AOT, first console program (`dart create`, `dart run`, `dart compile exe`, measured). D1.2 next: the four error kinds, reading stack traces, a logic bug
+**Topic:** ✅ **D0 DONE** (2026-10-26 · close-out 16/20) · ✅ **D1.1 closed** (concepts) — compiler/runtime defined at last (4/5). Carried into D1.2's first step: remove the Program B experiment, ignore the exe, commit, re-check the AOT timing correction. **D1.2 next:** error kinds, reading a stack trace, a logic bug
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** hot reload vs hot restart — corrected in D0.3 (5/5), close-out Q3 right but the wording slipped once more; recheck about 3 sessions later · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
-**Open drill:** answering completeness — count the prompt's deliverables before replying (see Mistakes Log; kept deliberately, since it is a live habit, not a score)
+**Revise (spaced):** AOT = compiled *before* running; the exe never compiles on launch (misconception 2026-10-26, recheck at the start of D1.2) · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — corrected in D0.3 (5/5), close-out Q3 right but the wording slipped once more; recheck about 3 sessions later · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
+**Open drill:** answering completeness. **Adjusted 2026-10-26:** counting alone hasn't worked across five rounds, so every exercise now ends with a **fill-in template** I paste back with each blank filled
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
 ### Machine state — verified, not assessment
@@ -291,18 +291,18 @@ Mastery:
 
 This unit also closes the oldest open revision item, carried since the 2026-09-16 baseline.
 
-- [ ] Explain what a **compiler** is (a program that translates source *once, before* execution)
-- [ ] Explain what a **runtime** is (machinery alive *during* execution — VM, GC, type checks, event loop)
-- [ ] Explain JIT vs AOT, and why debug builds hot-reload but release builds cannot
+- [x] Explain what a **compiler** is — D1.1 resubmission 4/5: "a translator; checks the code before converting it into machine code; if there are issues it flags them"
+- [x] Explain what a **runtime** is — D1.1 resubmission 4/5: "like the crew backstage; runs all the operations: memory, runtime checks"
+- [~] Explain JIT vs AOT, and why debug builds hot-reload but release builds cannot (**resubmission introduced a misconception:** "first time it converts the exe to machine code" — the exe was already machine code, compiled by `dart compile exe`; nothing compiles at launch. Concept otherwise right: JIT on the VM supports hot reload; AOT is compiled up front and uses less. **But my explanation said JIT "took time" while my own single measurement showed AOT slower** — 0.243 s vs 0.572 s — and I didn't notice. Claude re-timed: `dart run` 0.21/0.16/0.17 s; exe 0.01/0.01/0.01 s. The first exe launch carried a one-off cost — hypothesis: macOS checking a brand-new binary)
 - [ ] Explain the three error kinds: syntax, type, runtime, logic — and which stage catches each
-- [ ] Explain why `int x = "hello";` is a *type* error, not a syntax error
+- [~] Explain why `int x = "hello";` is a *type* error, not a syntax error (caught as `invalid_assignment` by `dart analyze` ✓, classified compile-time ✓; type-vs-syntax distinction → D1.2)
 - [ ] Explain when a null dereference is compile-time vs runtime under sound null safety
-- [ ] Create a console project with `dart create -t console`
-- [ ] Run it with `dart run`; print a **computed** value, not a literal
+- [x] Create a console project with `dart create -t console` (`dart_basics/`, `0df7aa5`; explained `bin/` = entry point that calls into `lib/`, `lib/` = business logic, `test/` = tests ✓)
+- [x] Run it with `dart run`; print a **computed** value (multiples of 7 up to 1000, in `lib/`, called from `bin/` ✓)
 - [ ] Read a compile error and locate the line
 - [ ] Read a runtime stack trace and locate the frame
 - [ ] Introduce one deliberate logic bug; diagnose it with the debugging template
-- [ ] Compare: `dart run` vs `dart compile exe` vs how Flutter runs the same language
+- [~] Compare: `dart run` vs `dart compile exe` vs how Flutter runs the same language (linked JIT → debug, AOT → release ✓; exe size 5.1 MB not reported)
 
 Carried misconception to correct (from 2026-10-25): compile-time examples were all *syntax* errors. Syntax errors and type errors are both compile-time but come from different stages — parser, then type checker.
 
@@ -880,6 +880,8 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-26 | 1 | D1.1 resubmission | ~3.5/5 avg | Definitions 4/5 + 4/5 — **the 2026-09-16 item finally answered**. A: no run ✓, analyzer catches `invalid_assignment` ✓, *why* garbled ("int x can be a string"). B: `'one'` prints then RangeError ✓, analyzer can't ✓ (label only). Timing reason 2/5: claimed the exe compiles on first launch. Blanks left: warm-up output, exe size, exact B error, gitignore, commit | AOT correction rechecked at the start of D1.2 |
+| 2026-10-26 | 1 | D1.1 — compiler vs runtime, JIT vs AOT | partial | Warm-up 3/5: global ✓, proving command missing. Section C: stages right for A (compile) and B (runtime), but **whether `'one'` printed** — the point of the prediction — the exact errors and the `dart analyze` results are missing. Timing explanation contradicted my own numbers. **Compiler and runtime definitions not answered** | Resubmit via the template |
 | 2026-10-26 | 1 | **D0 close-out** | 16/20 + tasks 2/3 | Q1 4/5 embedder ✓ (first time). Q2 4/5: `main()` never ran ✓, *how I know* missing. Q3 4/5: `R` ✓, but the second sentence said "hot reload… starts main again". Q4 4/5: right question to ask, measured numbers not used. Task 5 SDK path ✗ (third time). Pin ✓, commits ✓ | Path → D1 warm-up |
 | 2026-10-25 | 1 | D0.3 — finish (size reason, on-screen result) | 8/10 | Q1 4/5: debug carries the VM and debugger ✓, but "release only carries the code" forgets the 10.6 MB engine just measured in its own APK. Q2 4/5: spotted the DEBUG banner unprompted ✓; didn't report the `kReleaseMode: false/true` text | — |
 | 2026-10-25 | 1 | D0.3 — build modes (warm-up, section C) | 7/10 | Warm-up 5/5: reload vs restart now right, including that restart is not a native rerun. Section C 2/5: answered "don't ship bugs" but missed the point — a release build shows a **gray screen with no message**, so the bug is silent for the user *and* for me | Crash reporting (P8) is the answer to silent release failures |
@@ -904,7 +906,9 @@ Record the **pattern**, not the individual bug.
 | 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change (update D0.3: `79b9a45` "Fix fresh-start bug by restoring runApp…" contains **only the tracker file** — the runApp fix was already in `d7fe14f`; 4 of 6 now mislabelled). `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
 | 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | ✅ Corrected at the D0 close-out (Q1 4/5). Recheck about 1 week later |
 | 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | ✅ Corrected in the D0.3 warm-up (5/5). Recheck about 3 sessions later before retiring |
-| 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | **D1** |
+| 2026-10-26 | Measurement | Wrote "JIT took time, AOT is faster" directly under a measurement showing AOT slower (0.572 s vs 0.243 s); ran each only once although the hint said to repeat | Explained from expectation instead of reading the numbers I'd just produced | One run isn't evidence. Repeat, read the numbers, and if they contradict the theory, say so and investigate. The CPU column (0.07 s vs 0.02 s) supported the theory; the wall clock had a one-off first-launch cost | P2 performance; every timing task |
+| 2026-10-26 | AOT meaning | Explained the slow first exe launch as "first time it converts to machine code" | Carried JIT's "compile while running" idea over to AOT | **A**head-**o**f-**t**ime: `dart compile exe` already did all the compiling. The exe is machine code from its very first launch; a slow first launch is something outside the program | D1.2 warm-up |
+| 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | ✅ **Defined correctly in D1.1** (translator / backstage crew, 4/5). Parser-vs-type-checker part → D1.2. Recheck about 3 sessions later |
 
 ---
 
@@ -1228,6 +1232,39 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 
 ### Next
 - D1 — running Dart code. Warm-up: the `flutter` vs `fvm flutter` path item.
+
+---
+
+## 2026-10-26 (cont.) — D1.1 submission
+
+### Implemented
+- `dart_basics/` console project (`0df7aa5`, message accurate). `lib/dart_basics.dart`: `divideBySeven()` builds the multiples of 7 up to 1000 with a `for` + `%`; called from `bin/`. `dart analyze` clean.
+- Review: P2 — the name `divideBySeven` doesn't say what it returns (it returns *multiples* of 7; it divides nothing). P3 — template leftovers: `calculate()`, its test, and `print('Hello world')`. P2 — `dart_basics_exe` is untracked but **not ignored**; one `git add .` would commit a 5.1 MB binary.
+
+### Measured (mine, then Claude's reruns)
+- Mine, single run: `dart run` 0.243 s · exe 0.572 s (first launch).
+- Rerun ×3 by Claude: `dart run` 0.21 / 0.16 / 0.17 s · exe 0.01 / 0.01 / 0.01 s → AOT starts ~15–20× faster. Exe size 5.1 MB.
+
+### Deliverables: 2 complete · 4 partial · 1 missing
+- Complete: project + folders explained; own computing program.
+- Partial: warm-up (no command); timing (no size, explanation contradicts data); A/B (no `'one'` answer, no exact errors, no analyze results); commit (exe not ignored).
+- Missing: **compiler and runtime definitions** — the oldest open item, carried since 2026-09-16.
+
+### Process change
+- Fill-in template added to every exercise from now on.
+
+### Mastery (D1)
+- Implement [~] first evidence · Explain [~] partial · Debug [ ].
+
+---
+
+## 2026-10-26 (cont.) — D1.1 resubmission → concepts closed
+
+- **Compiler and runtime defined in my own words, 4/5 each** — the item open since the 2026-09-16 baseline.
+- A/B predictions confirmed; `invalid_assignment` caught by `dart analyze`; RangeError at runtime after `'one'` printed.
+- New misconception: thought the exe compiles to machine code on first launch. Corrected; rechecked at the start of D1.2.
+- Template used loosely: 5 blanks left (warm-up output, exe size, exact B error, gitignore, commit).
+- Working tree: Program B (crashes) still in `bin/`; Program A commented out in `lib/`; exe still neither ignored nor committed; nothing committed since `0df7aa5`. Don't commit the crashing `bin/` — the same lesson as D0.2's broken commit.
 
 ---
 

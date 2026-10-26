@@ -5,4 +5,9 @@ void main(List<String> arguments) {
 
   print('here is the list of numbers divisible by 7:');
   print(dart_basics.divideBySeven());
+
+  print('one');
+  var list = [1, 2, 3];
+  // print(list[10]);
+  print('two');
 }
