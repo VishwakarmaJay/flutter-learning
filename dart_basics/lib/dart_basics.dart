@@ -20,9 +20,12 @@ int bestRating(List<int> ratings) {
   return pickRating(ratings, ratings.length - 1); // line 6
 }
 
-void main() {
-  print('start');
-  print(bestRating([3, 5, 4])); // line 11
+double averageRating(List<int> ratings) {
+  var total = 0;
+  for (var i = 0; i < ratings.length; i++) {
+    total = total + ratings[i];
+  }
+  return total / ratings.length;
 }
 
 // int x = "Hello, Dart!";

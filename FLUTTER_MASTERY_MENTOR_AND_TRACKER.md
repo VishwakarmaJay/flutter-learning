@@ -37,10 +37,10 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ **D0 DONE** (2026-10-26 · close-out 16/20) · ✅ **D1.1 closed** · 🔄 **D1.2 issued** — the four error kinds and which stage catches each, reading a stack trace, debugging a logic bug I didn't write (step 0: clean up and commit D1.1's leftovers)
+**Topic:** ✅ **D0 DONE** (2026-10-26 · close-out 16/20) · ✅ **D1.1 closed** · 🔄 **D1.2 — one step per message** (agreed 2026-10-26). ✅ Step A: AOT experiment — **misconception corrected by evidence** · 🔄 Step B: the exe ignore rule (`.exe` written, doesn't match) ← issued · then · C syntax vs type · D the `averageRating` logic bug
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** AOT = compiled *before* running; the exe never compiles on launch (misconception 2026-10-26, recheck at the start of D1.2) · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — corrected in D0.3 (5/5), close-out Q3 right but the wording slipped once more; recheck about 3 sessions later · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
+**Revise (spaced):** AOT = compiled *before* running — corrected by experiment 2026-10-26 (old exe still printed `Hello world` after the edit); recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — corrected in D0.3 (5/5), close-out Q3 right but the wording slipped once more; recheck about 3 sessions later · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness. **Adjusted 2026-10-26:** counting alone hasn't worked across five rounds, so every exercise now ends with a **fill-in template** I paste back with each blank filled
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
@@ -294,14 +294,14 @@ This unit also closes the oldest open revision item, carried since the 2026-09-1
 - [x] Explain what a **compiler** is — D1.1 resubmission 4/5: "a translator; checks the code before converting it into machine code; if there are issues it flags them"
 - [x] Explain what a **runtime** is — D1.1 resubmission 4/5: "like the crew backstage; runs all the operations: memory, runtime checks"
 - [~] Explain JIT vs AOT, and why debug builds hot-reload but release builds cannot (**resubmission introduced a misconception:** "first time it converts the exe to machine code" — the exe was already machine code, compiled by `dart compile exe`; nothing compiles at launch. Concept otherwise right: JIT on the VM supports hot reload; AOT is compiled up front and uses less. **But my explanation said JIT "took time" while my own single measurement showed AOT slower** — 0.243 s vs 0.572 s — and I didn't notice. Claude re-timed: `dart run` 0.21/0.16/0.17 s; exe 0.01/0.01/0.01 s. The first exe launch carried a one-off cost — hypothesis: macOS checking a brand-new binary)
-- [ ] Explain the three error kinds: syntax, type, runtime, logic — and which stage catches each
+- [~] Explain the four error kinds — syntax, type, runtime, logic — and which stage catches each (D1.2 Step 1: real `expected_token` and `invalid_assignment` lines produced ✓; why both are compile-time and parser vs type checker not answered)
 - [~] Explain why `int x = "hello";` is a *type* error, not a syntax error (caught as `invalid_assignment` by `dart analyze` ✓, classified compile-time ✓; type-vs-syntax distinction → D1.2)
 - [ ] Explain when a null dereference is compile-time vs runtime under sound null safety
 - [x] Create a console project with `dart create -t console` (`dart_basics/`, `0df7aa5`; explained `bin/` = entry point that calls into `lib/`, `lib/` = business logic, `test/` = tests ✓)
 - [x] Run it with `dart run`; print a **computed** value (multiples of 7 up to 1000, in `lib/`, called from `bin/` ✓)
 - [ ] Read a compile error and locate the line
-- [ ] Read a runtime stack trace and locate the frame
-- [ ] Introduce one deliberate logic bug; diagnose it with the debugging template
+- [~] Read a runtime stack trace and locate the frame (D1.2 Step 2: fixed `bestRating` — the **cause**, not `pickRating` where it crashed ✓; frame number and the why not written; output after the fix not shown)
+- [ ] Diagnose a logic bug with the debugging template (D1.2 Step 3: **not done** — `averageRating` never added; the answer given described Step 2's RangeError instead)
 - [~] Compare: `dart run` vs `dart compile exe` vs how Flutter runs the same language (linked JIT → debug, AOT → release ✓; exe size 5.1 MB not reported)
 
 Carried misconception to correct (from 2026-10-25): compile-time examples were all *syntax* errors. Syntax errors and type errors are both compile-time but come from different stages — parser, then type checker.
@@ -880,6 +880,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-26 | 1 | D1.2 — error kinds, traces, logic bug | partial | Template not used (≈5 of 18 blanks). Warm-up ✗: "compiled on first launch" (misconception persists) + "A = ahead" (half). Predict: spotted the skipped first element by reading, but expected value and "any error?" unanswered. Step 1: both analyzer lines ✓, explanation ✗. Step 2: fix in the right function ✓. **Step 3 ✗ not attempted.** | Switch to one step per message |
 | 2026-10-26 | 1 | D1.1 resubmission | ~3.5/5 avg | Definitions 4/5 + 4/5 — **the 2026-09-16 item finally answered**. A: no run ✓, analyzer catches `invalid_assignment` ✓, *why* garbled ("int x can be a string"). B: `'one'` prints then RangeError ✓, analyzer can't ✓ (label only). Timing reason 2/5: claimed the exe compiles on first launch. Blanks left: warm-up output, exe size, exact B error, gitignore, commit | AOT correction rechecked at the start of D1.2 |
 | 2026-10-26 | 1 | D1.1 — compiler vs runtime, JIT vs AOT | partial | Warm-up 3/5: global ✓, proving command missing. Section C: stages right for A (compile) and B (runtime), but **whether `'one'` printed** — the point of the prediction — the exact errors and the `dart analyze` results are missing. Timing explanation contradicted my own numbers. **Compiler and runtime definitions not answered** | Resubmit via the template |
 | 2026-10-26 | 1 | **D0 close-out** | 16/20 + tasks 2/3 | Q1 4/5 embedder ✓ (first time). Q2 4/5: `main()` never ran ✓, *how I know* missing. Q3 4/5: `R` ✓, but the second sentence said "hot reload… starts main again". Q4 4/5: right question to ask, measured numbers not used. Task 5 SDK path ✗ (third time). Pin ✓, commits ✓ | Path → D1 warm-up |
@@ -907,7 +908,8 @@ Record the **pattern**, not the individual bug.
 | 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | ✅ Corrected at the D0 close-out (Q1 4/5). Recheck about 1 week later |
 | 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | ✅ Corrected in the D0.3 warm-up (5/5). Recheck about 3 sessions later before retiring |
 | 2026-10-26 | Measurement | Wrote "JIT took time, AOT is faster" directly under a measurement showing AOT slower (0.572 s vs 0.243 s); ran each only once although the hint said to repeat | Explained from expectation instead of reading the numbers I'd just produced | One run isn't evidence. Repeat, read the numbers, and if they contradict the theory, say so and investigate. The CPU column (0.07 s vs 0.02 s) supported the theory; the wall clock had a one-off first-launch cost | P2 performance; every timing task |
-| 2026-10-26 | AOT meaning | Explained the slow first exe launch as "first time it converts to machine code" | Carried JIT's "compile while running" idea over to AOT | **A**head-**o**f-**t**ime: `dart compile exe` already did all the compiling. The exe is machine code from its very first launch; a slow first launch is something outside the program | D1.2 warm-up |
+| 2026-10-26 | AOT meaning | Explained the slow first exe launch as "first time it converts to machine code" | Carried JIT's "compile while running" idea over to AOT | **A**head-**o**f-**t**ime: `dart compile exe` already did all the compiling. The exe is machine code from its very first launch; a slow first launch is something outside the program | ❌ Persisted at the D1.2 warm-up → ✅ **corrected by experiment** (D1.2 Step A): exe built 22:34, source edited 22:36, exe still printed `Hello world` while `dart run` printed `CHANGED`. My conclusion: "at the time of making the exe it converts the code into machine code… unless it's recompiled". Recheck about 3 sessions later |
+| 2026-10-26 | Exercise scope | Skipped Step 3 — the logic bug, the main point of D1.2 — and reported it with Step 2's answer; template ignored for the second exercise running | Long multi-step exercises get answered from memory, quickly, and without being run. Answers cluster on what was already done | Smaller units: one step, one answer, then the next | ✅ Agreed 2026-10-26: one step per message for the rest of D1.2 |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | ✅ **Defined correctly in D1.1** (translator / backstage crew, 4/5). Parser-vs-type-checker part → D1.2. Recheck about 3 sessions later |
 
 ---
@@ -921,6 +923,7 @@ Record the **pattern**, not the individual bug.
 | P2 | Source control | `learning/` is untracked; the baseline is not committed | Assignment 0 exists to create a *reproducible* baseline; an uncommitted one cannot be returned to | D1 | ⚠️ OPEN — `git add -n` dry run confirms 66 files, zero leaks from `build/`, `.dart_tool/`, `.idea/` |
 | P2 | Toolchain | No `.fvmrc`; Flutter resolves via the FVM global default | `pubspec.yaml` pins the Dart constraint but nothing pins the Flutter SDK — `flutter upgrade` would silently move the project | D1 | ✅ RESOLVED 2026-10-26 — pinned 3.38.3 (`36e2d66`). **Caveat:** plain `flutter` in the terminal still uses the global default; only `fvm flutter …` and VS Code honour the pin |
 | P2 | Project | `learning/` is still the untouched `flutter create` scaffold | No learner-written Dart exists yet | D1 | OPEN |
+| P3 | Source control | 5.1 MB `dart_basics_exe` committed in `e1d8324`, removed in `5fdd262` — **still in history and pushed to `origin/main`**; `dart_basics/.gitignore` still doesn't ignore it | Removing a file in a later commit doesn't remove it from history (the same lesson as the backend `.env`); every clone carries the 5 MB. Not a secret, so it's bloat, not a leak | D1.2 | OPEN — add the ignore rule now. Rewriting history needs a force-push: optional, my call, not recommended for 5 MB of non-secret data |
 | P3 | Source control | `.DS_Store` committed at the repo root; no root `.gitignore` | macOS junk in history; it shows up as noise in diffs — it rode along again in `36e2d66` | D1 | OPEN — add a root `.gitignore` and untrack it |
 | P1 | Backend contract | No refresh-token endpoint | Flutter must log the user out on expiry until it exists | Backend Phase Q → then F14 | OPEN (upstream) |
 | P2 | Backend contract | CORS allows only `http://localhost:4200` | Blocks a Flutter **Web** client; irrelevant for Android/iOS | F10 | OPEN (upstream) |
@@ -1266,6 +1269,33 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 - New misconception: thought the exe compiles to machine code on first launch. Corrected; rechecked at the start of D1.2.
 - Template used loosely: 5 blanks left (warm-up output, exe size, exact B error, gitignore, commit).
 - Working tree: Program B (crashes) still in `bin/`; Program A commented out in `lib/`; exe still neither ignored nor committed; nothing committed since `0df7aa5`. Don't commit the crashing `bin/` — the same lesson as D0.2's broken commit.
+
+---
+
+## 2026-10-26 (cont.) — D1.2 submission (partial)
+
+### Code (`e1d8324`, `5fdd262`, `0559a0b`; pushed to origin/main)
+- ✅ `bestRating` fixed with `ratings.length - 1` — the **calling** function, not `pickRating` where it crashed. That is the cause-vs-crash-site idea, applied correctly.
+- ❌ `averageRating` was never added — Step 3 not attempted.
+- ⚠️ The exe was committed (`e1d8324`), then removed (`5fdd262`): still in history and on GitHub. Still not gitignored.
+- P3: a second `main()` in `lib/dart_basics.dart` (library files don't need one); copied `// line 2/6/11` comments now point at the wrong lines (16/20/25); commented-out leftovers in `bin/` and `lib/`.
+- `0559a0b` "Refactor main function and improve bestRating logic" — a bug fix labelled as a refactor (the commit-message pattern).
+
+### Answers
+- Template not used. Warm-up: AOT misconception persisted. Step 1: analyzer lines only. Step 2: fix only. Step 3: answered with Step 2's bug.
+
+### Mastery (D1)
+- Debug [~] — the Step 2 fix shows cause vs crash site in action. Explain [~]. Implement [~].
+
+### Next
+- Proposed: one step per message for the rest of D1.2, starting with the AOT experiment.
+
+---
+
+## 2026-10-26 (cont.) — D1.2 Step A (one-step format)
+
+- AOT experiment run and verified from timestamps: the exe still printed `Hello world` after the source changed; `dart run` printed `CHANGED` (Claude reran it). Conclusion stated correctly in my own words. 4/5 — the prediction and the `dart run` line from the 4-line reply weren't given.
+- Already working ahead, uncommitted: `averageRating` added **and already fixed** (`i = 0`) without the evidence steps — Step D will ask me to reproduce first. `.gitignore` gained `.exe`, which doesn't match `dart_basics_exe` — that's Step B.
 
 ---
 
