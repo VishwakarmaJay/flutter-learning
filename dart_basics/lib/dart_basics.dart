@@ -23,6 +23,7 @@ int bestRating(List<int> ratings) {
 double averageRating(List<int> ratings) {
   var total = 0;
   for (var i = 0; i < ratings.length; i++) {
+    print('i=$i  ratings[i]=${ratings[i]}  total=$total');
     total = total + ratings[i];
   }
   return total / ratings.length;

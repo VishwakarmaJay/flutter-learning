@@ -37,10 +37,10 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ **D0 DONE** (2026-10-26 · close-out 16/20) · ✅ **D1.1 closed** · 🔄 **D1.2 — one step per message** (agreed 2026-10-26). ✅ Step A: AOT experiment — **misconception corrected by evidence** · 🔄 Step B: the exe ignore rule (`.exe` written, doesn't match) ← issued · then · C syntax vs type · D the `averageRating` logic bug
+**Topic:** ✅ D0 DONE · ✅ D1 DONE · ✅ **D2 DONE** (2026-10-27, close-out 17/20) · next: **D3 — control flow** (closes the last baseline misconception: "`for` is numeric, `while` is conditional")
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** AOT = compiled *before* running — corrected by experiment 2026-10-26 (old exe still printed `Hello world` after the edit); recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — corrected in D0.3 (5/5), close-out Q3 right but the wording slipped once more; recheck about 3 sessions later · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
+**Revise (spaced):** expected values from the definition, not the code — **still unanswered** (D2 close-out Q3 skipped the value of `7 / 2`) · AOT = compiled *before* running — corrected 2026-10-26; recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — ✅ passed its recheck (D2 close-out Q4); retire after one more · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness. **Adjusted 2026-10-26:** counting alone hasn't worked across five rounds, so every exercise now ends with a **fill-in template** I paste back with each blank filled
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
@@ -287,44 +287,64 @@ Mastery:
 ---
 
 ## D1. Running Dart code — compiler, runtime, and the first program
-**Status:** `IN PROGRESS` — split into **D1.1** (compiler vs runtime, JIT vs AOT, first program — issued 2026-10-26) and **D1.2** (error kinds, stack traces, logic bug). The null-dereference item moves to D6, where null safety is taught
+**Status:** `DONE` (2026-10-26) — Explain, Implement and Debug evidenced. Step D2 (second-input verification) **skipped at my request** ("no need to repeat, move forward"); the expected-value habit stays open in the Mistakes Log. Was split into **D1.1** (compiler vs runtime, JIT vs AOT, first program — issued 2026-10-26) and **D1.2** (error kinds, stack traces, logic bug). The null-dereference item moves to D6, where null safety is taught
 
 This unit also closes the oldest open revision item, carried since the 2026-09-16 baseline.
 
 - [x] Explain what a **compiler** is — D1.1 resubmission 4/5: "a translator; checks the code before converting it into machine code; if there are issues it flags them"
 - [x] Explain what a **runtime** is — D1.1 resubmission 4/5: "like the crew backstage; runs all the operations: memory, runtime checks"
 - [~] Explain JIT vs AOT, and why debug builds hot-reload but release builds cannot (**resubmission introduced a misconception:** "first time it converts the exe to machine code" — the exe was already machine code, compiled by `dart compile exe`; nothing compiles at launch. Concept otherwise right: JIT on the VM supports hot reload; AOT is compiled up front and uses less. **But my explanation said JIT "took time" while my own single measurement showed AOT slower** — 0.243 s vs 0.572 s — and I didn't notice. Claude re-timed: `dart run` 0.21/0.16/0.17 s; exe 0.01/0.01/0.01 s. The first exe launch carried a one-off cost — hypothesis: macOS checking a brand-new binary)
-- [~] Explain the four error kinds — syntax, type, runtime, logic — and which stage catches each (D1.2 Step 1: real `expected_token` and `invalid_assignment` lines produced ✓; why both are compile-time and parser vs type checker not answered)
-- [~] Explain why `int x = "hello";` is a *type* error, not a syntax error (caught as `invalid_assignment` by `dart analyze` ✓, classified compile-time ✓; type-vs-syntax distinction → D1.2)
+- [x] Explain the four error kinds — syntax → parser ✓, type → type checker ✓, runtime → RangeError after `'one'` ✓, logic → no error at all, found only by evidence ✓ (Step D1)
+- [x] Explain why `int x = "hello";` is a *type* error, not a syntax error (D1.2 Step C: "the parser checks the grammar and the type checker checks the type"; the semicolon "tells the program this instruction ends here" ✓)
 - [ ] Explain when a null dereference is compile-time vs runtime under sound null safety
 - [x] Create a console project with `dart create -t console` (`dart_basics/`, `0df7aa5`; explained `bin/` = entry point that calls into `lib/`, `lib/` = business logic, `test/` = tests ✓)
 - [x] Run it with `dart run`; print a **computed** value (multiples of 7 up to 1000, in `lib/`, called from `bin/` ✓)
 - [ ] Read a compile error and locate the line
 - [~] Read a runtime stack trace and locate the frame (D1.2 Step 2: fixed `bestRating` — the **cause**, not `pickRating` where it crashed ✓; frame number and the why not written; output after the fix not shown)
-- [ ] Diagnose a logic bug with the debugging template (D1.2 Step 3: **not done** — `averageRating` never added; the answer given described Step 2's RangeError instead)
+- [x] Diagnose a logic bug with the debugging template — reproduced, traced, fixed; verification with an independent second input **skipped at my request** (D1.2 Step D1: bug reproduced, loop printed `i=1…3` showing `ratings[0]` never added ✓, cause named — loop starts at 1, but indexes start at 0 ✓, fixed → 4.0 ✓. **But "expected by hand" was given as 3**, the buggy output, not 16/4 = 4.0. Second-input verification pending)
 - [~] Compare: `dart run` vs `dart compile exe` vs how Flutter runs the same language (linked JIT → debug, AOT → release ✓; exe size 5.1 MB not reported)
 
-Carried misconception to correct (from 2026-10-25): compile-time examples were all *syntax* errors. Syntax errors and type errors are both compile-time but come from different stages — parser, then type checker.
+Carried misconception to correct (from 2026-10-25): compile-time examples were all *syntax* errors. Syntax errors and type errors are both compile-time but come from different stages — parser, then type checker. → ✅ Corrected in D1.2 Step C.
+
+Mastery:
+
+```text
+[x] Explain    4/5 — compiler/runtime defined; parser vs type checker; AOT proven by experiment
+[x] Implement  3/5 — multiples-of-7, averageRating, bestRating fix — all my own code in lib/ called from bin/
+[x] Debug      3/5 — cause vs crash site (bestRating); logic bug traced with prints. Expected value wrong once (3 vs 4.0)
+[ ] Apply
+[ ] Defend
+```
 
 ---
 
 ## D2. Values, variables and types
-**Status:** `TODO`
+**Status:** `DONE` (2026-10-27) — close-out 17/20 (85%). Delivered one step per message (7 steps + close-out). Step 1 issued 2026-10-26 (`final` vs `const`, binding vs mutation; verified on Dart 3.10.1: `final` list `.add` OK; `const` list `.add` passes the analyzer and fails at runtime with *Unsupported operation: Cannot add to an unmodifiable list*; reassigning `final` → `assignment_to_final_local`; `const now = DateTime.now()` → `const_initialized_with_non_constant_value`)
 
-- [ ] Values vs variable bindings vs assignment
-- [ ] `var`, explicit types, type inference
-- [ ] `final` — prevents **rebinding**, not mutation of the referenced object
-- [ ] `const` — compile-time constant; how it differs from `final`
-- [ ] A variable is a binding; two bindings can reference one mutable object
-- [ ] `int`, `double`, `num`, `String`, `bool`
-- [ ] `dynamic` vs `Object` vs `Object?` vs `void` vs `Never`
-- [ ] Strings: interpolation, raw strings, multiline
-- [ ] Scope and shadowing
-- [ ] Static vs dynamic typing; what the analyzer checks before you run
-- [ ] Exercise: predict which of four `final`/`const` lines compile, and why
-- [ ] Exercise: mutate a list held by a `final` binding; explain why it is allowed
+- [x] Values vs variable bindings vs assignment (Steps 1, 5, 7)
+- [x] `var`, explicit types, type inference (D2 Step 3: "var permanently keeps the type… int" ✓; no initializer → `dynamic` ✓)
+- [x] `final` — prevents **rebinding**, not mutation of the referenced object (D2 Step 1: "we can mutate the thing if it's mutable but can't assign a new value")
+- [x] `const` — compile-time constant; how it differs from `final` (Step 1 ✓; Step 2: Block 2 = runtime, Block 4 = compile-time ✓. *Why* the analyzer misses Block 2 given as a label — "it can't find runtime issues"; the mechanism was explained to me)
+- [x] A variable is a binding; two bindings can reference one mutable object (name-tag model used correctly in Steps 1 and 7)
+- [~] `int`, `double`, `num`, `String`, `bool` (D2 Step 4: `/` → double ✓ (but predicted `4 / 2` = `2`), `~/` discards decimals ✓ (it truncates toward zero, so it's not quite floor: `-5 ~/ 2` = `-2`); `double d = 5;` predicted to fail — it works (literal becomes 5.0); line 6 category ✓, direction reversed. `String` and `bool` not yet covered)
+- [~] `dynamic` vs `Object` vs `Object?` vs `void` vs `Never` (Step 3: `dynamic` skips checks → runtime NoSuchMethodError ✓; `Object` → compile error ✓, but reasoned "int can't have length" — the analyzer only sees the **declared** type `Object`, not the int inside. `Object?` moves to D6 (null safety), `void` and `Never` to D4 (return types))
+- [x] Strings: interpolation, raw strings, multiline (D2 Step 6: `$name.length` → "only name, needs `{}` for an expression" ✓; raw ✓; multiline ✓ — called them "backticks" (TS word; Dart uses `'''`); my output showed `  Line two` indented, because triple-quoted strings keep the source indentation)
+- [x] Scope and shadowing (D2 Step 7: inner `var name` shadows, outer unchanged ✓; without `var` the outer changes ✓; block-local after its block → compile error ✓; the analyzer doesn't warn ✓. Called main's variable "global" — it's local to `main`; a global is top-level, like `final name` in `learning/lib/main.dart`)
+- [x] Static vs dynamic typing; what the analyzer checks before you run (Steps 2–3: analyzer checks declared types, not particular objects; `dynamic` switches checking off)
+- [x] Exercise: predict which of four `final`/`const` lines compile, and why (Steps 1–2)
+- [x] Exercise: mutate a list held by a `final` binding; explain why it is allowed (Step 1 Block 1)
 
-Closes three baseline misconceptions: `final` vs `const`, binding vs mutation, variable-as-container.
+Closes three baseline misconceptions: `final` vs `const`, binding vs mutation, variable-as-container. → ✅ All three corrected.
+
+Mastery:
+
+```text
+[x] Explain    4/5 — final/const, binding vs mutation, inference, dynamic vs Object, scope — mechanism-style reasons from Step 3 on
+[x] Implement  2/5 — small: two fixes for the int→double error (toDouble, retype), strings, scope experiments
+[x] Debug      3/5 — classified every block as works/compile/runtime from real output; fixed invalid_assignment two ways
+[ ] Apply
+[ ] Defend
+```
 
 ---
 
@@ -880,6 +900,17 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
+| 2026-10-27 | 1 | **D2 close-out** | 14/20 (70%) — not passed | Q1 1/5: described an index error, but there's no index — line X (`add`) works, line Y (reassign a `final`) is a compile error; which line wasn't named. Not run, though the question said to run if unsure. Q2 5/5. Q3 4/5: compile/type error and fix ✓, **the value of 7 / 2 (3.5) skipped** — the expected-value check. Q4 4/5: `R` ✓, but explained via `main()` rather than "globals are set once and hot reload doesn't reset them"; "hot refresh" again | Run Q1, give 3.5, then re-grade |
+| 2026-10-27 | 1 | **D2 close-out** | 17/20 | Q1 4/5: reassigning `final` is a compile error ✓ plus a mutation workaround ✓, but **didn't name the line** (Y) and wrote "we can't mutate" (meant *can*). Q2 5/5. Q3 4/5: compile/type error ✓, fix ✓, **value of `7 / 2` (3.5) not given**. Q4 4/5: `R` ✓, reload only reruns `build` ✓ — but put the global "in main"; it's top-level, initialized once at startup | Expected-value item stays open |
+| 2026-10-27 | 1 | D2 Step 7 — scope and shadowing | 5/5 | **Every blank filled, every answer from a real run** — the first fully complete reply. Mechanism-style reasons ✓. Term: called `main`'s variable "global" (it's local to `main`) | — |
+| 2026-10-27 | 1 | D2 Step 6 — strings | 4/4 | All four outputs from a real run ✓, A explained with the fix ✓. "Matched my prediction?" not answered. Called `'''` "backticks" — a TypeScript habit | — |
+| 2026-10-27 | 1 | D2 Step 5 — run + fix | 3/4 | Line 2 run → `2.0` ✓. Fix 1 `i.toDouble()` → `5.0` ✓. Fix 2 `int e = i` → `5` ✓ (valid, but it changes what `e` can hold; `num e = i` keeps decimals possible). **Line 5 never observed** — `d` is never printed. Said analyze had "no issues" — it reports 2 warnings (`unused_local_variable` for `x` and `d`) | — |
+| 2026-10-27 | 1 | D2 Step 4 — numbers | 3.5/6 | 1 ✓, 3 ✓, 4 ✓ with mechanism. **2 ✗**: said `2` — contradicts my own line 4 reason ("`/` gives a decimal even when it divides evenly") → `2.0`. **5 ✗**: said a double can't hold an int — an int *literal* is allowed (`5.0`). 6: compile error ✓, but said "int can't hold double" — reversed (it's an int value into a double variable) and "inference" is the wrong word. **Predicted only; never ran**, which would have caught 2 and 5 | Step 5: run, then fix |
+| 2026-10-27 | 1 | D2 Step 3 — var / dynamic / Object | 17/20 | **All four with reasons that name what the analyzer sees** — the label→mechanism drill worked first time. A 5/5, B 5/5, C 4/5. D 3/5: right category, but said the analyzer rejects it because "int can't have length" — it rejects it because the declared type is `Object` (it would reject `Object d = 'hello'; d.length` too) | `Object` vs declared type → recheck in D9/D12 |
+| 2026-10-27 | 1 | D2 Step 2 — classify the 4 blocks | 4/5 | All four categories correct: works / runtime / compile / compile ✓ — closed Step 1's gap. Step 2's lines: what `dart analyze` said and what printed before the error **not given**; "why the analyzer can't catch it" answered with a label again ("it can't find runtime issues") | Mechanism explained; transfer question in D2 Step 3 |
+| 2026-10-27 | 1 | D2 Step 1 — `final` vs `const` | 4/5 | Block 1 works ✓; Block 3 — rebinding vs mutation in my own words ✓ (**baseline misconception corrected**); Block 4 ✓. Asked for *work / compile error / runtime error* + predicted vs actual — I gave explanations instead, so **when** Block 2 fails (runtime, after Block 1 printed; analyzer silent) wasn't stated. Ran Blocks 1–2 in `bin/` | Step 2 |
+| 2026-10-26 | 1 | D1.2 Step D1 — logic bug | 3/5 | Actual ✓, "no error — it's a logic bug" ✓, loop trace ✓, cause and fix ✓. **Expected value wrong (3, should be 4.0)** — it matched the buggy output, which would have let the bug through. "Which output line proves it": pointed at the code, not at the output (the trace never shows `i=0` / the 4) | Independent expected values, D2 |
+| 2026-10-26 | 1 | D1.2 Step C — syntax vs type | 4/5 | All 3 answered ✓. Parser = grammar, type checker = types ✓. "Why both are compile-time" a bit circular ("it checks at compile time") — better: both can be seen from the source alone, without running anything. Slip: "can't give an int to a string" — it's reversed | — |
 | 2026-10-26 | 1 | D1.2 — error kinds, traces, logic bug | partial | Template not used (≈5 of 18 blanks). Warm-up ✗: "compiled on first launch" (misconception persists) + "A = ahead" (half). Predict: spotted the skipped first element by reading, but expected value and "any error?" unanswered. Step 1: both analyzer lines ✓, explanation ✗. Step 2: fix in the right function ✓. **Step 3 ✗ not attempted.** | Switch to one step per message |
 | 2026-10-26 | 1 | D1.1 resubmission | ~3.5/5 avg | Definitions 4/5 + 4/5 — **the 2026-09-16 item finally answered**. A: no run ✓, analyzer catches `invalid_assignment` ✓, *why* garbled ("int x can be a string"). B: `'one'` prints then RangeError ✓, analyzer can't ✓ (label only). Timing reason 2/5: claimed the exe compiles on first launch. Blanks left: warm-up output, exe size, exact B error, gitignore, commit | AOT correction rechecked at the start of D1.2 |
 | 2026-10-26 | 1 | D1.1 — compiler vs runtime, JIT vs AOT | partial | Warm-up 3/5: global ✓, proving command missing. Section C: stages right for A (compile) and B (runtime), but **whether `'one'` printed** — the point of the prediction — the exact errors and the `dart analyze` results are missing. Timing explanation contradicted my own numbers. **Compiler and runtime definitions not answered** | Resubmit via the template |
@@ -899,17 +930,20 @@ Record the **pattern**, not the individual bug.
 | Date | Topic | Mistake | Root Cause | Correct Mental Model | Revisit |
 |---|---|---|---|---|---|
 | 2026-09-16 | Loops | Treated `for` as numeric and `while` as conditional | Learned from examples, not from the control-flow mechanism | `for` also has a condition; setup and step are extra syntax | D3 |
-| 2026-09-16 | Immutability | Believed `final` allows reassignment | Confused rebinding with mutation of the referenced object | `final` prevents rebinding; the referenced object may still change | D2 |
-| 2026-09-16 | Variables | Treated a variable as a container in every case | Overgeneralized a simple analogy | A variable is a binding; several bindings can reference one object | D2 |
+| 2026-09-16 | Immutability | Believed `final` allows reassignment | Confused rebinding with mutation of the referenced object | `final` prevents rebinding; the referenced object may still change | ✅ Corrected 2026-10-27 (D2 Step 1, own words: "we can mutate the thing if it's mutable but can't assign a new value"). Recheck about 3 sessions later |
+| 2026-09-16 | Variables | Treated a variable as a container in every case | Overgeneralized a simple analogy | A variable is a binding; several bindings can reference one object | ✅ Corrected 2026-10-27 — name-tag model applied correctly in D2 Steps 1 and 7. Recheck about 3 sessions later |
 | 2026-09-16 | Answering | Answered only the first portion of a multi-part question | Did not re-check every requested deliverable | Re-read the prompt and verify every part is answered | Ongoing |
 | 2026-10-25 | Answering (**RECURRENCE**) | Twice in one reply: Q1 answered only the `flutter test` clause; Q2 skipped the null-dereference clause. Assignment 0 delivered 2 of 7 criteria | Treats the last or most familiar clause as the whole question; no checklist pass before submitting | Count the prompt's deliverables, answer each explicitly, then re-read and tick them off | **DRILL ACTIVE** — completeness is graded before correctness |
 | 2026-10-25 | Answering (**RECURRENCE ×3**) | D0.2 exercise: 6 deliverables, 1 complete, 1 partial. SDK versions skipped for the **second exercise running**. Reported "done" with 4 deliverables missing | Treats "the code is committed" as "the exercise is done"; written answers (predictions, error message, section C) were never sent | Before saying "done", go down the acceptance-criteria list and point at the evidence for each box. Answers that live in my head or in the IDE don't count until they are pasted | **DRILL ACTIVE** |
 | 2026-10-25 | Git: commit messages | 3 of 4 learner commits don't describe their change (update D0.3: `79b9a45` "Fix fresh-start bug by restoring runApp…" contains **only the tracker file** — the runApp fix was already in `d7fe14f`; 4 of 6 now mislabelled). `2a6c9c5` "Add initial iOS project structure" (it was the whole project plus the tracker); `9583fbd` "Refactor… comments and formatting" **hid a behaviour change** (`runApp(const MainApp())` → `runApp(const Text('Hello Jay'))`); `382d782` "change greeting to KK" changes nothing visible, because `name` is no longer on screen | Messages describe the intent or the most visible edit, not the diff; likely accepted from an IDE suggestion | Write the message from `git diff --staged`: what changed in behaviour first, then cosmetics. A behaviour change is never a "refactor" | D0.3 — every commit checked |
 | 2026-10-25 | Cross-platform model | Explains "same code on Android and Chrome" with the engine alone; says Chrome gets native code | Two-layer mental model (my code → engine) instead of four; doesn't yet know web compiles Dart to JS/Wasm | Your code, the framework and the engine's drawing logic are shared. **Only the embedder is swapped per platform**, and on web Dart compiles to JS/Wasm, not machine code | ✅ Corrected at the D0 close-out (Q1 4/5). Recheck about 1 week later |
-| 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | ✅ Corrected in the D0.3 warm-up (5/5). Recheck about 3 sessions later before retiring |
+| 2026-10-25 | Hot reload vs restart | Said hot restart "picks up the value which is already initialized, not affecting main" — that's hot **reload**. My own lab an hour earlier showed the opposite | The two names are similar, and the rule hasn't been tied to the mechanism (which one reruns `main()`) | Hot **reload**: injects code, calls `build()` again, keeps state, does **not** rerun `main()`, globals keep their old values. Hot **restart**: reruns `main()` from the top, every global initialized again, state lost | ✅ Corrected in D0.3 (5/5); ✅ recheck passed in the D2 close-out Q4. Retire after one more |
 | 2026-10-26 | Measurement | Wrote "JIT took time, AOT is faster" directly under a measurement showing AOT slower (0.572 s vs 0.243 s); ran each only once although the hint said to repeat | Explained from expectation instead of reading the numbers I'd just produced | One run isn't evidence. Repeat, read the numbers, and if they contradict the theory, say so and investigate. The CPU column (0.07 s vs 0.02 s) supported the theory; the wall clock had a one-off first-launch cost | P2 performance; every timing task |
 | 2026-10-26 | AOT meaning | Explained the slow first exe launch as "first time it converts to machine code" | Carried JIT's "compile while running" idea over to AOT | **A**head-**o**f-**t**ime: `dart compile exe` already did all the compiling. The exe is machine code from its very first launch; a slow first launch is something outside the program | ❌ Persisted at the D1.2 warm-up → ✅ **corrected by experiment** (D1.2 Step A): exe built 22:34, source edited 22:36, exe still printed `Hello world` while `dart run` printed `CHANGED`. My conclusion: "at the time of making the exe it converts the code into machine code… unless it's recompiled". Recheck about 3 sessions later |
-| 2026-10-26 | Exercise scope | Skipped Step 3 — the logic bug, the main point of D1.2 — and reported it with Step 2's answer; template ignored for the second exercise running | Long multi-step exercises get answered from memory, quickly, and without being run. Answers cluster on what was already done | Smaller units: one step, one answer, then the next | ✅ Agreed 2026-10-26: one step per message for the rest of D1.2 |
+| 2026-10-26 | Exercise scope | Skipped Step 3 — the logic bug, the main point of D1.2 — and reported it with Step 2's answer; template ignored for the second exercise running | Long multi-step exercises get answered from memory, quickly, and without being run. Answers cluster on what was already done | Smaller units: one step, one answer, then the next | ✅ Working: one step per message since D1.2; D2 Step 7 was the first fully complete reply. Keep the format |
+| 2026-10-27 | Assignment direction | Reversed which side is which, twice: "can't give an int to a string" (D1.2 C, really String → int) and "int can't hold the double" (D2 Step 4, really int → double) | Reads `TYPE name = value` the wrong way round | Read `double e = i;` as "put **i (an int)** into **e (a double box)**" — the box type is on the left, the value on the right | Next assignment question |
+| 2026-10-27 | Label vs mechanism | "Why didn't the analyzer catch it?" → "because it's a runtime issue" — the third time (D0 Directionality, D1.2 list[10], D2 const `.add`) | Answers with the category name, which is the question restated | Name **what the tool knows and what it can't know**: the analyzer knows *types* (`List<int>` has `.add`), not facts about the specific object at runtime (its length, whether it's frozen) | ✅ Applied immediately in D2 Step 3 (four mechanism-style reasons). Keep checking |
+| 2026-10-26 | Expected values | Gave "expected by hand = 3" for `averageRating([4,3,5,4])` — the same as the buggy output; the correct value is 16 / 4 = 4.0 | Likely computed the "expected" by following the code (skipping the first item) instead of from the definition of an average — which copies the bug into the check | An expected value must come from **outside the code**: the definition (sum of all ÷ count), a hand calculation, or a known source. If expected = actual is derived from the code, a test can never fail | OPEN — D1.2 D2 verification skipped at my request; D2 close-out Q3 asked for the value of `7 / 2` and it was skipped again. Recheck in D3 (a loop with a known answer) and D16 |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | ✅ **Defined correctly in D1.1** (translator / backstage crew, 4/5). Parser-vs-type-checker part → D1.2. Recheck about 3 sessions later |
 
 ---
@@ -923,7 +957,7 @@ Record the **pattern**, not the individual bug.
 | P2 | Source control | `learning/` is untracked; the baseline is not committed | Assignment 0 exists to create a *reproducible* baseline; an uncommitted one cannot be returned to | D1 | ⚠️ OPEN — `git add -n` dry run confirms 66 files, zero leaks from `build/`, `.dart_tool/`, `.idea/` |
 | P2 | Toolchain | No `.fvmrc`; Flutter resolves via the FVM global default | `pubspec.yaml` pins the Dart constraint but nothing pins the Flutter SDK — `flutter upgrade` would silently move the project | D1 | ✅ RESOLVED 2026-10-26 — pinned 3.38.3 (`36e2d66`). **Caveat:** plain `flutter` in the terminal still uses the global default; only `fvm flutter …` and VS Code honour the pin |
 | P2 | Project | `learning/` is still the untouched `flutter create` scaffold | No learner-written Dart exists yet | D1 | OPEN |
-| P3 | Source control | 5.1 MB `dart_basics_exe` committed in `e1d8324`, removed in `5fdd262` — **still in history and pushed to `origin/main`**; `dart_basics/.gitignore` still doesn't ignore it | Removing a file in a later commit doesn't remove it from history (the same lesson as the backend `.env`); every clone carries the 5 MB. Not a secret, so it's bloat, not a leak | D1.2 | OPEN — add the ignore rule now. Rewriting history needs a force-push: optional, my call, not recommended for 5 MB of non-secret data |
+| P3 | Source control | 5.1 MB `dart_basics_exe` committed in `e1d8324`, removed in `5fdd262` — **still in history and pushed to `origin/main`**; `dart_basics/.gitignore` still doesn't ignore it | Removing a file in a later commit doesn't remove it from history (the same lesson as the backend `.env`); every clone carries the 5 MB. Not a secret, so it's bloat, not a leak | D1.2 | ⚠️ PARTIAL — ignore rule added 2026-10-26 (`dart_basics_exe`, verified with `git check-ignore`). The blob stays in history; rewriting it needs a force-push — optional, my call, not recommended for 5 MB of non-secret data |
 | P3 | Source control | `.DS_Store` committed at the repo root; no root `.gitignore` | macOS junk in history; it shows up as noise in diffs — it rode along again in `36e2d66` | D1 | OPEN — add a root `.gitignore` and untrack it |
 | P1 | Backend contract | No refresh-token endpoint | Flutter must log the user out on expiry until it exists | Backend Phase Q → then F14 | OPEN (upstream) |
 | P2 | Backend contract | CORS allows only `http://localhost:4200` | Blocks a Flutter **Web** client; irrelevant for Android/iOS | F10 | OPEN (upstream) |
@@ -944,6 +978,12 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 | 2026-10-25 | FVM | FVM 4.1.2. `fvm use <version>` creates `.fvmrc` (the project's Flutter version) and a `.fvm/` symlink folder; docs recommend gitignoring `.fvm/` (done automatically when `updateGitIgnore` is true, the default) | FVM major upgrade |
 | 2026-10-26 | Dart compilation | dart.dev overview: the Dart VM has "a just-in-time compiler (JIT) with incremental recompilation (enabling hot reload)"; the AOT compiler produces "native ARM or x64 machine code" with "consistent, short startup time"; the runtime handles GC, "enforcing the Dart type system" (some checks are runtime), and isolates. Local Dart 3.10.1: `dart create -t console` is the default template; `dart compile` offers `exe`, `aot-snapshot`, `jit-snapshot`, `kernel`, `js`, `wasm` | Dart SDK upgrade |
 | 2026-10-26 | Dart error output (3.10.1) | Generated in the scratchpad: a syntax error reads `Expected ';' after this.` from `dart run` and `expected_token` from `dart analyze`; an out-of-range index reads `RangeError (length): Invalid value: Not in inclusive range 0..2: 3`, with a stack trace numbered `#0` (newest, `List.[]` in `dart:core`) down to `main`, then `dart:isolate` startup frames | Dart SDK upgrade |
+| 2026-10-26 | final / const (Dart 3.10.1) | Scratchpad run: `final names = ['Jay']; names.add('KK')` works. `const ratings = [4,5]; ratings.add(3)` → analyzer silent, runtime `Unsupported operation: Cannot add to an unmodifiable list`. `name = 'KK'` on a `final` → `assignment_to_final_local`. `const now = DateTime.now()` → `const_initialized_with_non_constant_value` + `const_with_non_const` | Dart SDK upgrade |
+| 2026-10-27 | var / dynamic / Object (Dart 3.10.1) | `var a = 5; a = 'hi'` → `invalid_assignment` (inferred `int`). `var b;` (no initializer) → `dynamic`: `b = 5; b = 'hi'` passes analyze and runs. `dynamic c = 5; c.length` → analyzer silent, runtime `NoSuchMethodError: Class 'int' has no instance getter 'length'`. `Object d = 5; d.length` → compile error `undefined_getter` | Dart SDK upgrade |
+| 2026-10-27 | Numbers (Dart 3.10.1) | `5 / 2` → `2.5`; `4 / 2` → `2.0` (`/` always gives a `double`); `5 ~/ 2` → `2`. `double d = 5;` is allowed (an int *literal* becomes 5.0); `int i = 5; double d = i;` → `invalid_assignment`; `int x = 4 / 2;` → `invalid_assignment`. `num` accepts both | Dart SDK upgrade |
+| 2026-10-27 | `~/` and conversion | `-5 ~/ 2` → `-2` (truncates toward zero); `(-5 / 2).floor()` → `-3`; `i.toDouble()` converts an int variable → `5.0` | Dart SDK upgrade |
+| 2026-10-27 | String interpolation (Dart 3.10.1) | `'Hi $name.length'` → `Hi Jay.length` (`$` grabs only the identifier); `'Hi ${name.length}'` → `Hi 3`; `r'Hi $name'` → `Hi $name`; `'''…'''` keeps line breaks; `'$2 + 3'` → compile error `missing_identifier` | Dart SDK upgrade |
+| 2026-10-27 | Scope / shadowing (Dart 3.10.1) | `var name` inside an `if` block shadows the outer `name`; after the block the outer value is unchanged (`Jay`). Without `var`, the assignment changes the outer variable (`KK` after the block). Using a block-local variable after its block → `undefined_identifier`. The analyzer gives no warning for the shadowing | Dart SDK upgrade |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1296,6 +1336,42 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 
 - AOT experiment run and verified from timestamps: the exe still printed `Hello world` after the source changed; `dart run` printed `CHANGED` (Claude reran it). Conclusion stated correctly in my own words. 4/5 — the prediction and the `dart run` line from the 4-line reply weren't given.
 - Already working ahead, uncommitted: `averageRating` added **and already fixed** (`i = 0`) without the evidence steps — Step D will ask me to reproduce first. `.gitignore` gained `.exe`, which doesn't match `dart_basics_exe` — that's Step B.
+
+## 2026-10-26 (cont.) — D1.2 Step B
+
+- Reason correct: `.exe` matches only a file literally named `.exe`, and `dart_basics_exe` has no extension. New rule `dart_basics_exe`; `git check-ignore -v` → `.gitignore:4`; `git status` clean. All 3 answers given.
+- Committed and pushed `d9b808c` "Fix averageRating logic and update main function output". It's really an *add* — the buggy version was never committed — and the ignore-rule change isn't mentioned. P3: `.gitignore` has no trailing newline.
+
+## 2026-10-26 (cont.) — D1.2 Step D1 → **D1 DONE**
+
+- Step C 4/5: parser = grammar, type checker = types.
+- Step D1 3/5: bug reproduced, loop trace printed, cause (start at 1, indexes start at 0) and fix (→ 4.0) correct. **Expected value given as 3** — the buggy output; the correct value is 16 / 4 = 4.0. Logged in Mistakes.
+- Step D2 (independent second input, remove the debug print, commit) **skipped at my request**. Left behind, uncommitted: the `print('i=$i …')` line in `lib/dart_basics.dart`.
+- D1 → `DONE` on Explain/Implement/Debug evidence. Next: D2 Step 1, one step per message.
+
+---
+
+## 2026-10-27 — D2 values, variables and types → **D2 DONE**
+
+### Learned
+- `final` (no rebinding, object may still mutate) vs `const` (compile-time, frozen) — and that TS `const` ≈ Dart `final`. Inference (`var x = 5` is `int` for good; `var x;` is `dynamic`). `dynamic` (checks off → runtime errors) vs `Object` (checked against the declared type). `int`/`double`/`num`, `/` always `double`, `~/` truncates toward zero; int literal → double allowed, int variable → double not. Strings: `$name` vs `${expr}`, raw, `'''` keeps indentation. Scope and shadowing (the analyzer doesn't warn).
+
+### Format
+- One step per message throughout. Step 7 was the first fully complete reply, with real output for every blank.
+
+### Quiz
+- Steps 1–7 + close-out 17/20. Mechanism-style "why" answers from Step 3 onward (the label→mechanism drill worked).
+
+### Mistakes
+- Corrected: `final` allows reassignment · variable-as-container · label instead of mechanism (improving).
+- New: assignment direction read backwards (twice).
+- Still open: expected values from the definition — the `7 / 2` value was skipped.
+
+### Housekeeping
+- Uncommitted in `dart_basics/`: the D2 experiments in `bin/`, the debug print in `lib/averageRating`. `dart analyze` shows 2 `unused_local_variable` warnings.
+
+### Next
+- D3 — control flow.
 
 ---
 
