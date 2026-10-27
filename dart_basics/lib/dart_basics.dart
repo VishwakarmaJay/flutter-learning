@@ -4,10 +4,19 @@ int calculate() {
 
 List<int> divideBySeven() {
   List<int> result = [];
-  for (var i = 1; i <= 1000; i++) {
+  // for (var i = 1; i <= 1000; i++) {
+  //   if (i % 7 == 0) {
+  //     result.add(i);
+  //   }
+  // }
+
+  int i = 1;
+
+  while (i <= 1000) {
     if (i % 7 == 0) {
       result.add(i);
     }
+    i++;
   }
   return result;
 }
@@ -21,12 +30,65 @@ int bestRating(List<int> ratings) {
 }
 
 double averageRating(List<int> ratings) {
+  if (ratings.isEmpty) {
+    return 0.0;
+  }
+
   var total = 0;
-  for (var i = 0; i < ratings.length; i++) {
-    print('i=$i  ratings[i]=${ratings[i]}  total=$total');
-    total = total + ratings[i];
+  for (var rating in ratings) {
+    total += rating;
   }
   return total / ratings.length;
+}
+
+String ratingLabel(double average) {
+  if (average >= 4.5) {
+    return 'Excellent';
+  } else if (average >= 3.5) {
+    return 'Good';
+  } else if (average >= 2.5) {
+    return 'Average';
+  } else if (average == 0.0) {
+    return 'No review';
+  } else {
+    return 'Poor';
+  }
+}
+
+String starName(int stars) {
+  switch (stars) {
+    case 1:
+    case 2:
+      return 'Low';
+    case 3:
+      return 'Three Stars';
+    case 4:
+      return 'Four Stars';
+    case 5:
+      return 'Five stars';
+    default:
+      return 'Invalid';
+  }
+}
+
+double validAverage(List<int> raw) {
+  if (raw.isEmpty) {
+    return 0.0;
+  }
+
+  var total = 0;
+  for (var rating in raw) {
+    if (rating == -1) {
+      break;
+    }
+
+    if (rating < 1 || rating > 5) {
+      continue; // Skip invalid ratings
+    }
+    print('Rating: $rating');
+    total += rating;
+  }
+  return total / raw.length;
 }
 
 // int x = "Hello, Dart!";

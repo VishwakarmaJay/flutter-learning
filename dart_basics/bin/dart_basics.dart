@@ -1,28 +1,34 @@
-// import 'package:dart_basics/dart_basics.dart' as dart_basics;
+import 'package:dart_basics/dart_basics.dart' as dart_basics;
 
 void main(List<String> arguments) {
-  // print('Hello');
+  print('Hello');
 
-  // print('here is the list of numbers divisible by 7:');
-  // print(dart_basics.divideBySeven());
+  // for (var word = 'J'; word.length < 4; word = word + 'a') {
+  //   print(word);
+  // }
 
-  // int x = "Hello. Dart";
+  // List<int> count = [];
+  // for (int i = 1; i <= 1000; i++) {
+  //   if (i % 7 == 0) {
+  //     count.add(i);
+  //   }
+  // }
 
-  // print("Here is the list of numbers divisible by 7:")
+  // print(count);
 
-  // print(dart_basics.averageRating([4, 3, 5, 4]));
+  // print('Divisble by 7 :  ${dart_basics.divideBySeven().length}');
+  // int total = 0;
+  // for (int i = 1; i <= 20; i++) {
+  //   total += i;
+  // }
+  // print('Total: $total');
 
-  var name = 'Jay';
+  print('ratingLabel: ${dart_basics.ratingLabel(4.8)}');
+  print('ratingLabel: ${dart_basics.ratingLabel(3.8)}');
+  print('ratingLabel: ${dart_basics.ratingLabel(0.0)}');
 
-  if (true) {
-    var name = 'KK'; // ← note the var
-    print('inside A: $name');
-  }
-  print('after A: $name');
+  print('Star name : ${dart_basics.starName(2)}');
+  print('Star name : ${dart_basics.starName(7)}');
 
-  if (true) {
-    name = 'KK'; // ← no var
-    print('inside B: $name');
-  }
-  print('after B: $name');
+  print('Total: ${dart_basics.validAverage([4, 0, 5, 9, 3, -1, 2])}');
 }
