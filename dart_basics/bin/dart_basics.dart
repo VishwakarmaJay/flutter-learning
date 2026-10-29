@@ -31,4 +31,6 @@ void main(List<String> arguments) {
   print('Star name : ${dart_basics.starName(7)}');
 
   print('Total: ${dart_basics.validAverage([4, 0, 5, 9, 3, -1, 2])}');
+  print('Total: ${dart_basics.validAverage([0, 9, -1])}');
+  print('ratingLabel: ${dart_basics.ratingLabel(3.0)}');
 }

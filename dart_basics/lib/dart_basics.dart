@@ -77,18 +77,20 @@ double validAverage(List<int> raw) {
   }
 
   var total = 0;
+  var count = 0;
   for (var rating in raw) {
     if (rating == -1) {
       break;
     }
 
     if (rating < 1 || rating > 5) {
-      continue; // Skip invalid ratings
+      continue;
     }
     print('Rating: $rating');
     total += rating;
+    count++;
   }
-  return total / raw.length;
+  return count == 0 ? 0.0 : total / count;
 }
 
 // int x = "Hello, Dart!";
