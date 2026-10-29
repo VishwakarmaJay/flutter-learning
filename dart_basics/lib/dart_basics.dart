@@ -93,4 +93,26 @@ double validAverage(List<int> raw) {
   return count == 0 ? 0.0 : total / count;
 }
 
-// int x = "Hello, Dart!";
+String formatMovie(String title, {required int year, double rating = 0.0}) {
+  return '$title ($year)  ${rating == 0.0 ? '' : '* $rating'}';
+}
+
+List<int> keepWhere(List<int> ratings, bool Function(int) test) {
+  List<int> result = [];
+
+  for (var rating in ratings) {
+    if (test(rating)) {
+      result.add(rating);
+    }
+  }
+
+  return result;
+}
+
+int Function() makeViewCounter() {
+  var count = 0;
+  return () {
+    count++;
+    return count;
+  };
+}

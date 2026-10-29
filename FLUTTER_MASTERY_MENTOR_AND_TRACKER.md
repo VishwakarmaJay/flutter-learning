@@ -37,7 +37,7 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ D0 · ✅ D1 · ✅ D2 DONE · 🔄 **D3 — control flow** · ✅ Step 1 `while` rewrite (142 ✓) · ✅ Step 2 infinite loop (partial; model statement given, rechecked at the D3 close-out) · ✅ Step 3 off-by-one (190 → 210, fixed with `<=`) · ✅ Step 4 `for-in` rewrite (clean) · ✅ Step 5b guard clause → `double`, `[]` → 0.0, print back in `bin/` · ⚠️ **D3 close-out 18/25 (72%) — not passed.** `validAverage` returns 1.714 (should be 4.0) and was committed; Q3 and Q5 wrong → remediation issued
+**Topic:** ✅ D0 · ✅ D1 · ✅ D2 · ✅ D3 DONE · 🔄 **D4 — functions**: whole unit + exercise + practice issued in one message (my request 2026-10-29)
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** expected values from the definition, not the code — **still unanswered** (D2 close-out Q3 skipped the value of `7 / 2`) · AOT = compiled *before* running — corrected 2026-10-26; recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — ✅ passed its recheck (D2 close-out Q4); retire after one more · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
@@ -349,24 +349,34 @@ Mastery:
 ---
 
 ## D3. Control flow
-**Status:** `IN PROGRESS` — Step 1 issued 2026-10-27 (anatomy of `for`; a non-numeric `for` loop; rewrite my multiples-of-7 loop as a `while`, with the count — 142 — stated from the definition *before* running. Verified on 3.10.1: `for (var word = 'J'; word.length < 4; word = word + 'a')` prints `J`, `Ja`, `Jaa`)
+**Status:** `DONE` (2026-10-29) — close-out 18/25 → remediated to 21/25 (84%). Steps 1–5 one per message; the rest as one lesson at my request. Step 1 issued 2026-10-27 (anatomy of `for`; a non-numeric `for` loop; rewrite my multiples-of-7 loop as a `while`, with the count — 142 — stated from the definition *before* running. Verified on 3.10.1: `for (var word = 'J'; word.length < 4; word = word + 'a')` prints `J`, `Ja`, `Jaa`)
 
-- [~] `if` / `else`, boolean logic, guard clauses (Step 5 guard shape ✓; **Step 5b fixed the design**: `double` again, `if (ratings.isEmpty) return 0.0;`, `print` back in `bin/` ✓. Boolean operators and else-if chains → the combined D3 lesson)
+- [x] `if` / `else`, boolean logic, guard clauses (guard clause ✓; `ratingLabel` else-if chain with the 0.0 check ordered before "Poor" ✓, all branches incl. `3.0 → Average` tested; `\|\|` used correctly; Q5's `&&` version wrong, `![…].contains(r)` right)
 - [x] Basic `switch` statements (D3 exercise: `starName` with grouped `case 1: case 2:` and `default` ✓; close-out Q2: prints only `four` ✓)
-- [~] `while`, `do-while` (Step 1 `while` rewrite ✓. **`do-while` ✗**: close-out Q3 said a `do-while` whose condition is false from the start runs forever — it runs once)
-- [~] `for` — **it has a condition**; it is not inherently a "numeric" loop (Step 1: explained the string `for` loop by its condition ✓. Step 2: "what for and while share" still framed around `i++`/1000 → model statement given; recheck at the D3 close-out)
+- [x] `while`, `do-while` (Step 1 `while` rewrite ✓. Close-out Q3 first said "forever" → **re-run: prints once**, "do-while runs at least one time" ✓; didn't add that `3 > 5` is false, which is why it stops)
+- [x] `for` — **it has a condition**; it is not inherently a "numeric" loop (close-out Q1: "both are condition-based" ✓)
 - [x] `for-in` over an iterable (D3 Step 4: `averageRating` rewritten with `for (var rating in ratings)`, debug print removed, analyze clean, 4.0 ✓. Bonus answered well — index loop when you need the position. Said `for-in` works on a Map: **it doesn't** — `for_in_of_invalid_type`; use `.entries`/`.keys`/`.values`)
 - [x] `break`, `continue` (close-out Q4 5/5; used both correctly in `validAverage`)
 - [x] Off-by-one errors — build one deliberately, then fix it (D3 Step 3: `i < 20` → 190, `i <= 20` → 210, matching the expected 210; explained "20 was missing because `i < 20` stops at 19"; used `total += i` on my own)
-- [~] Infinite loops — cause one deliberately, then explain the cause (Step 2: removed `i++`, ran forever ✓; cause not tied to the condition — `i` stays 1, so `i <= 1000` is always true)
+- [x] Infinite loops — cause one deliberately, then explain the cause (Step 2 ✓; mechanism given by Claude; Q3's remediation showed it — a loop only runs forever if its condition *stays true*)
 - [x] Exercise: rewrite a `for` as a `while` and prove they are equivalent (Step 1: same 142 from both)
 
-Closes the baseline misconception: "`for` is numeric, `while` is conditional."
+Closes the baseline misconception: "`for` is numeric, `while` is conditional." → ✅ Corrected (close-out Q1).
+
+Mastery:
+
+```text
+[x] Explain    4/5 — for/while share a condition; break vs continue; switch without break; do-while runs at least once
+[x] Implement  3/5 — while rewrite, sum loop, for-in averageRating, ratingLabel (if/else-if), starName (switch), validAverage (break/continue, count, ternary)
+[x] Debug      3/5 — infinite loop, two off-by-ones, validAverage dividing by raw.length (1.714 → 4.0)
+[ ] Apply
+[ ] Defend
+```
 
 ---
 
 ## D4. Functions
-**Status:** `TODO`
+**Status:** `IN PROGRESS` — full lesson + exercise + practice issued 2026-10-29 in one message, at my request. Also covers `void` and `Never` (moved from D2)
 
 - [ ] Declaration, parameters, arguments, return values
 - [ ] Positional vs named parameters
@@ -901,6 +911,7 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
 | 2026-10-27 | 1 | **D2 close-out** | 14/20 (70%) — not passed | Q1 1/5: described an index error, but there's no index — line X (`add`) works, line Y (reassign a `final`) is a compile error; which line wasn't named. Not run, though the question said to run if unsure. Q2 5/5. Q3 4/5: compile/type error and fix ✓, **the value of 7 / 2 (3.5) skipped** — the expected-value check. Q4 4/5: `R` ✓, but explained via `main()` rather than "globals are set once and hot reload doesn't reset them"; "hot refresh" again | Run Q1, give 3.5, then re-grade | ⚠️ *Not written in this Claude session — arrived via my commit `92bd611`. The D2 close-out graded here scored 17/20 (next row), and D2's `DONE` is based on that attempt. Both rows kept until I say which stands.* |
+| 2026-10-29 | 1 | **D3 remediation** → pass | 21/25 (84%) | **Template used, every blank filled** ✓. `validAverage` fixed by debugging: dividing by `raw.length` → divides by a valid `count`; `count == 0 ? 0.0 : total / count` (ternary, my own idea) ✓. `[4,0,5,9,3,-1,2]` → 4.0, `[0,9,-1]` → 0.0, `ratingLabel(3.0)` → Average, **all with expected values written first** ✓. Q3 → once ✓ ("at least one time"). Commit `99f254d` message accurate ✓. Debug print `Rating:` still in `lib/` | D3 DONE |
 | 2026-10-27 | 1 | **D3 close-out** | 18/25 (72%) — not passed | Q1 5/5 (misconception corrected). Q2 4/5: prints `four` ✓, but said "doesn't require return" — it's `break`/no fallthrough. **Q3 1/5**: said the `do-while` runs forever — the condition `3 > 5` is false, so it runs once. Q4 5/5. Q5 3/5: `r > 1 && r < 5` is wrong (it means valid, and excludes 1 and 5); `![1,2,3,4,5].contains(r)` ✓. **Exercise**: `validAverage([4,0,5,9,3,-1,2])` → 1.714 — divides by all 7 items instead of the 3 valid ones (should be 4.0); no expected values written; committed with the bug; `ratingLabel(3.0)` not tested (tested 3.8); debug print left in. Template not used | Remediation: fix by debugging, re-answer Q3/Q5 |
 | 2026-10-27 | 1 | D3 Step 5b — guard clause redesign | 3/4 | `double` restored, `[]` → `0.0`, print moved to `bin/` ✓, analyze clean. New list `[1..5]`: expected 3 → actual 3.0 ✓ (**expected stated** this time). Reason for 0.0 in a movie app not given; `[]` output not shown; `bin/` label still says "Total" | — |
 | 2026-10-27 | 1 | D3 Step 5 — guard clause | 2/4 | Guard clause written correctly ✓. **New list `[1,2,3,4,5]` → 3.0** ✓ — first time a fresh list was used (but the expected value wasn't written down first). `[]` output not reported (with `void` it prints nothing). Design: considered "return 0" but chose `void` + `print` inside the function — P1: callers can no longer get the number, and an empty list is now silent | Step 5b |
@@ -952,7 +963,7 @@ Record the **pattern**, not the individual bug.
 | 2026-10-27 | Assignment direction | Reversed which side is which, twice: "can't give an int to a string" (D1.2 C, really String → int) and "int can't hold the double" (D2 Step 4, really int → double) | Reads `TYPE name = value` the wrong way round | Read `double e = i;` as "put **i (an int)** into **e (a double box)**" — the box type is on the left, the value on the right | Next assignment question |
 | 2026-10-27 | Label vs mechanism | "Why didn't the analyzer catch it?" → "because it's a runtime issue" — the third time (D0 Directionality, D1.2 list[10], D2 const `.add`) | Answers with the category name, which is the question restated | Name **what the tool knows and what it can't know**: the analyzer knows *types* (`List<int>` has `.add`), not facts about the specific object at runtime (its length, whether it's frozen) | ✅ Applied immediately in D2 Step 3 (four mechanism-style reasons). Keep checking |
 | 2026-10-27 | Function design | Fixed an edge case by changing `double averageRating` → `void` and printing inside `lib/` (✅ reverted in Step 5b) | Optimized for making the error disappear rather than for what callers need | A function that *calculates* should **return** the value; the caller decides whether to print it, show it in Flutter, or sort by it. Fix edge cases inside the contract (e.g. return 0.0, later `double?`), don't change the contract | D3 Step 5b; D4 functions |
-| 2026-10-26 | Expected values | Gave "expected by hand = 3" for `averageRating([4,3,5,4])` — the same as the buggy output; the correct value is 16 / 4 = 4.0 | Likely computed the "expected" by following the code (skipping the first item) instead of from the definition of an average — which copies the bug into the check | An expected value must come from **outside the code**: the definition (sum of all ÷ count), a hand calculation, or a known source. If expected = actual is derived from the code, a test can never fail | OPEN — D1.2 D2 verification skipped at my request; D2 close-out Q3 asked for the value of `7 / 2` and it was skipped again. Recheck in D3 (a loop with a known answer) and D16. **D3 Step 1:** value given (142 ✓) for the first time; method still came from the code's own check, not an independent count. **D3 Step 3:** 210 used ✓ (given by Claude after the hint confusion). **D3 Step 4:** asked for a new list worked out by hand — reused the known list instead. **D3 close-out: the cost made concrete** — no expected value written, so `validAverage` printed 1.714 instead of 4.0 and was committed without anyone noticing |
+| 2026-10-26 | Expected values | Gave "expected by hand = 3" for `averageRating([4,3,5,4])` — the same as the buggy output; the correct value is 16 / 4 = 4.0 | Likely computed the "expected" by following the code (skipping the first item) instead of from the definition of an average — which copies the bug into the check | An expected value must come from **outside the code**: the definition (sum of all ÷ count), a hand calculation, or a known source. If expected = actual is derived from the code, a test can never fail | OPEN — D1.2 D2 verification skipped at my request; D2 close-out Q3 asked for the value of `7 / 2` and it was skipped again. Recheck in D3 (a loop with a known answer) and D16. **D3 Step 1:** value given (142 ✓) for the first time; method still came from the code's own check, not an independent count. **D3 Step 3:** 210 used ✓ (given by Claude after the hint confusion). **D3 Step 4:** asked for a new list worked out by hand — reused the known list instead. **D3 close-out: the cost made concrete** — no expected value written, so `validAverage` printed 1.714 instead of 4.0 and was committed without anyone noticing. **D3 remediation:** expected values written first for all three checks ✓ (`ratingLabel(3.0)` → Average was my own). Improving — retire after one fully independent case in D4 |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | ✅ **Defined correctly in D1.1** (translator / backstage crew, 4/5). Parser-vs-type-checker part → D1.2. Recheck about 3 sessions later |
 
 ---
@@ -996,6 +1007,7 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 | 2026-10-27 | `for` clauses (Dart 3.10.1) | All three `for` clauses are optional: `for (var i = 1; i <= 3;) {…}` and `for (;;) {…}` pass `dart analyze` and run (a missing step loops forever unless something `break`s) | Dart SDK upgrade |
 | 2026-10-27 | for-in / empty average (Dart 3.10.1) | `for (var x in someMap)` → compile error `for_in_of_invalid_type` (a Map isn't an `Iterable`); `map.entries` / `.keys` / `.values` are. `averageRating([])` → `0 / 0` → **`NaN`**, no error, and the program carries on | Dart SDK upgrade |
 | 2026-10-27 | switch / do-while (Dart 3.10.1) | A switch *statement* case with a body doesn't fall through and needs no `break` (`case 3: print('three'); case 4: …` prints only `three`); empty cases still group (`case 1: case 2: return 'Poor';`). `do { … } while (n < 5)` with `n = 10` runs the body once. `break` leaves the loop; `continue` skips to the next round | Dart SDK upgrade |
+| 2026-10-29 | Functions (Dart 3.10.1) | Named params with defaults and `required` work; a missing required named arg → compile error `missing_required_argument`. Optional positional `[int? year]` works. Closures: two counters from `makeCounter()` are independent (`1, 2, 1`); a closure created in `for (var i …)` captures **that round's** `i` (prints 0, 1, 2 — like TS `let`, unlike JS `var`); a closure sees the variable's *current* value (`x` changed to 99 after the closure was made → prints 99). `ratings.where((r) => r >= 4)` and a tear-off `ratings.map(twice)` work. Using a `void` result → `use_of_void_result`. A `Never` function that throws is caught by `try`/`catch` | Dart SDK upgrade |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1384,6 +1396,28 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 
 ### Next
 - D3 — control flow.
+
+## 2026-10-27 → 2026-10-29 — D3 control flow → **D3 DONE**
+
+### Learned
+- `for` and `while` are both condition-driven; `for` adds an optional setup and step (all three clauses optional). Infinite loops need a condition that *stays* true. Off-by-one at `<` vs `<=`. `for-in` removes the index (not usable on a `Map` directly). Guard clauses; `&&`/`||`/`!` with short-circuiting; else-if order matters. Dart 3 `switch` needs no `break`; empty cases group. `do-while` runs at least once. `break` vs `continue`.
+
+### Implemented (`dart_basics/lib`)
+- `divideBySeven` as `while`; a 1–20 sum loop; `averageRating` → `for-in` + guard returning 0.0; `ratingLabel`; `starName`; `validAverage` (skip invalid, stop at -1, divide by the valid count).
+
+### Debugged
+- Missing `i++` → infinite loop; `i < 20` → 190; `validAverage` dividing by `raw.length` → 1.714 instead of 4.0 (committed once, then fixed).
+
+### Format
+- One step per message for Steps 1–5; the rest of D3 as one lesson at my request ("time consuming"). The first batched submission skipped the template and let the 1.714 bug through; the remediation used the template completely.
+
+### Mistakes
+- ✅ "`for` is numeric" corrected — all five September misconceptions done.
+- Function design: `void` + print inside `lib/` (reverted).
+- Expected values: improving; one more independent check needed.
+
+### Next
+- D4 — functions. Leftover: remove `print('Rating: …')` from `validAverage`.
 
 ## 2026-10-27 (cont.) — housekeeping before D3
 
