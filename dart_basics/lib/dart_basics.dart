@@ -86,7 +86,6 @@ double validAverage(List<int> raw) {
     if (rating < 1 || rating > 5) {
       continue;
     }
-    print('Rating: $rating');
     total += rating;
     count++;
   }
@@ -94,7 +93,7 @@ double validAverage(List<int> raw) {
 }
 
 String formatMovie(String title, {required int year, double rating = 0.0}) {
-  return '$title ($year)  ${rating == 0.0 ? '' : '* $rating'}';
+  return '$title ($year)${rating == 0.0 ? '' : ' * $rating'}';
 }
 
 List<int> keepWhere(List<int> ratings, bool Function(int) test) {

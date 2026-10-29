@@ -37,10 +37,10 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ D0 · ✅ D1 · ✅ D2 · ✅ D3 DONE · 🔄 **D4 — functions**: whole unit + exercise + practice issued in one message (my request 2026-10-29)
+**Topic:** ✅ D0 · ✅ D1 · ✅ D2 · ✅ D3 · ✅ **D4 DONE** (2026-10-29) · next: **D5 — collections**. Uncommitted: the D4 close-out fixes in `dart_basics/`
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
-**Revise (spaced):** expected values from the definition, not the code — **still unanswered** (D2 close-out Q3 skipped the value of `7 / 2`) · AOT = compiled *before* running — corrected 2026-10-26; recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — ✅ passed its recheck (D2 close-out Q4); retire after one more · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
+**Revise (spaced):** expected values — ✅ **retired 2026-10-29** (own list, own test, expected written first) · AOT = compiled *before* running — corrected 2026-10-26; recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — ✅ passed its recheck (D2 close-out Q4); retire after one more · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
 **Open drill:** answering completeness. Fill-in template at the end of every exercise. **Format change 2026-10-27, at my request:** one step per message ended ("time consuming") — the rest of D3 is taught as one lesson. Note: the one-step format is when completeness improved (D2 Step 7 was the first fully complete reply), so watch for gaps
 **Strategy:** beginner-first · one small topic at a time · project-first · I implement, Claude does not
 
@@ -376,16 +376,26 @@ Mastery:
 ---
 
 ## D4. Functions
-**Status:** `IN PROGRESS` — full lesson + exercise + practice issued 2026-10-29 in one message, at my request. Also covers `void` and `Never` (moved from D2)
+**Status:** `DONE` (2026-10-29) — one-go lesson at my request; practice 21/25 (84%); close-out tasks done. Also covered `void` and `Never` (moved from D2)
 
-- [ ] Declaration, parameters, arguments, return values
-- [ ] Positional vs named parameters
-- [ ] Optional parameters and defaults; `required`
-- [ ] Arrow (`=>`) functions
-- [ ] Anonymous functions and closures
-- [ ] Functions as values; passing callbacks
-- [ ] What a closure captures, and when that leaks
-- [ ] Exercise: write a function that takes a function and returns a function
+Mastery:
+
+```text
+[x] Explain    4/5 — closures capture the variable; separate counters; named vs positional; why a calculating function returns
+[x] Implement  3/5 — formatMovie (named/required/default), keepWhere (function parameter, for-in), makeViewCounter (closure)
+[x] Debug      3/5 — found and fixed the always-added double space in formatMovie (the space moved inside the ternary)
+[ ] Apply
+[ ] Defend
+```
+
+- [x] Declaration, parameters, arguments, return values (D4: `formatMovie`, `keepWhere`, `makeViewCounter`)
+- [x] Positional vs named parameters (P4: named for `createUser(email, password, isAdmin, sendWelcomeEmail)` — "helps the reader understand what the function takes" ✓)
+- [x] Optional parameters and defaults; `required` (`{required int year, double rating = 0.0}` ✓; missing `year:` → copied `missing_required_argument` text ✓; P1 reason restated the message rather than saying the analyzer sees the declaration and the call)
+- [x] Arrow (`=>`) functions (lambdas `(rating) => rating >= 4` and `% 2 == 0`)
+- [x] Anonymous functions and closures (`makeViewCounter` → Dune 4, Arrival 2 ✓; P2 "references the variable, not the creation-time value" ✓; P3 separate counts ✓)
+- [x] Functions as values; passing callbacks (`keepWhere(…, bool Function(int) test)` built with `for-in` and `test(rating)` ✓. P5 mixed "store the result" with "store the function")
+- [~] What a closure captures, and when that leaks (captures the variable ✓ — P2; leaks → D14 streams and F3 dispose)
+- [~] Exercise: write a function that takes a function and returns a function (covered in two halves: `keepWhere` takes one, `makeViewCounter` returns one)
 
 ---
 
@@ -911,6 +921,8 @@ Promote the movie/watchlist client to production quality: auth with expiry handl
 | Date | Track | Topic | Score | Weak Areas | Action |
 |---|---|---|---:|---|---|
 | 2026-10-27 | 1 | **D2 close-out** | 14/20 (70%) — not passed | Q1 1/5: described an index error, but there's no index — line X (`add`) works, line Y (reassign a `final`) is a compile error; which line wasn't named. Not run, though the question said to run if unsure. Q2 5/5. Q3 4/5: compile/type error and fix ✓, **the value of 7 / 2 (3.5) skipped** — the expected-value check. Q4 4/5: `R` ✓, but explained via `main()` rather than "globals are set once and hot reload doesn't reset them"; "hot refresh" again | Run Q1, give 3.5, then re-grade | ⚠️ *Not written in this Claude session — arrived via my commit `92bd611`. The D2 close-out graded here scored 17/20 (next row), and D2's `DONE` is based on that attempt. Both rows kept until I say which stands.* |
+| 2026-10-29 | 1 | D4 close-out | 4.5/5 | Spacing bug fixed — space moved inside the ternary; verified no trailing spaces ✓. Debug print removed ✓ (finally). **Own case, expected first**: `keepWhere([3,8,1,6,9,2], odd)` → expected `[3,1,9]`, actual `[3, 1, 9]` ✓. P5 rethink ✓ ("the caller expects that value and uses it"). Commit not done | D4 DONE |
+| 2026-10-29 | 1 | D4 — functions (one-go lesson) | practice 21/25 (84%) | All 7 exercise outputs correct ✓; `keepWhere` and `makeViewCounter` clean. **Template not used; no expected values written** (the second batched round to skip both). P1 3/5 (restated the error message). P2 5, P3 5, P4 5. P5 3/5: confused storing a *result* with storing a *function*. Unreported: analyze (clean), commit, debug print (still there). Bug found by Claude: `formatMovie` always adds two spaces → `Dune (2021)  * 4.5`, `Arrival (2016)␣␣` | Close-out tasks issued |
 | 2026-10-29 | 1 | **D3 remediation** → pass | 21/25 (84%) | **Template used, every blank filled** ✓. `validAverage` fixed by debugging: dividing by `raw.length` → divides by a valid `count`; `count == 0 ? 0.0 : total / count` (ternary, my own idea) ✓. `[4,0,5,9,3,-1,2]` → 4.0, `[0,9,-1]` → 0.0, `ratingLabel(3.0)` → Average, **all with expected values written first** ✓. Q3 → once ✓ ("at least one time"). Commit `99f254d` message accurate ✓. Debug print `Rating:` still in `lib/` | D3 DONE |
 | 2026-10-27 | 1 | **D3 close-out** | 18/25 (72%) — not passed | Q1 5/5 (misconception corrected). Q2 4/5: prints `four` ✓, but said "doesn't require return" — it's `break`/no fallthrough. **Q3 1/5**: said the `do-while` runs forever — the condition `3 > 5` is false, so it runs once. Q4 5/5. Q5 3/5: `r > 1 && r < 5` is wrong (it means valid, and excludes 1 and 5); `![1,2,3,4,5].contains(r)` ✓. **Exercise**: `validAverage([4,0,5,9,3,-1,2])` → 1.714 — divides by all 7 items instead of the 3 valid ones (should be 4.0); no expected values written; committed with the bug; `ratingLabel(3.0)` not tested (tested 3.8); debug print left in. Template not used | Remediation: fix by debugging, re-answer Q3/Q5 |
 | 2026-10-27 | 1 | D3 Step 5b — guard clause redesign | 3/4 | `double` restored, `[]` → `0.0`, print moved to `bin/` ✓, analyze clean. New list `[1..5]`: expected 3 → actual 3.0 ✓ (**expected stated** this time). Reason for 0.0 in a movie app not given; `[]` output not shown; `bin/` label still says "Total" | — |
@@ -962,8 +974,9 @@ Record the **pattern**, not the individual bug.
 | 2026-10-26 | Exercise scope | Skipped Step 3 — the logic bug, the main point of D1.2 — and reported it with Step 2's answer; template ignored for the second exercise running | Long multi-step exercises get answered from memory, quickly, and without being run. Answers cluster on what was already done | Smaller units: one step, one answer, then the next | ✅ Working: one step per message since D1.2; D2 Step 7 was the first fully complete reply. Keep the format |
 | 2026-10-27 | Assignment direction | Reversed which side is which, twice: "can't give an int to a string" (D1.2 C, really String → int) and "int can't hold the double" (D2 Step 4, really int → double) | Reads `TYPE name = value` the wrong way round | Read `double e = i;` as "put **i (an int)** into **e (a double box)**" — the box type is on the left, the value on the right | Next assignment question |
 | 2026-10-27 | Label vs mechanism | "Why didn't the analyzer catch it?" → "because it's a runtime issue" — the third time (D0 Directionality, D1.2 list[10], D2 const `.add`) | Answers with the category name, which is the question restated | Name **what the tool knows and what it can't know**: the analyzer knows *types* (`List<int>` has `.add`), not facts about the specific object at runtime (its length, whether it's frozen) | ✅ Applied immediately in D2 Step 3 (four mechanism-style reasons). Keep checking |
+| 2026-10-29 | Batched answers | In both one-go rounds (D3 lesson, D4 lesson) the template was skipped and no expected values were written; in the D3 round that let the 1.714 bug through | A long batch is answered from the run output alone | In batch mode, paste the template first, then fill it in while working — not afterwards | Every batch |
 | 2026-10-27 | Function design | Fixed an edge case by changing `double averageRating` → `void` and printing inside `lib/` (✅ reverted in Step 5b) | Optimized for making the error disappear rather than for what callers need | A function that *calculates* should **return** the value; the caller decides whether to print it, show it in Flutter, or sort by it. Fix edge cases inside the contract (e.g. return 0.0, later `double?`), don't change the contract | D3 Step 5b; D4 functions |
-| 2026-10-26 | Expected values | Gave "expected by hand = 3" for `averageRating([4,3,5,4])` — the same as the buggy output; the correct value is 16 / 4 = 4.0 | Likely computed the "expected" by following the code (skipping the first item) instead of from the definition of an average — which copies the bug into the check | An expected value must come from **outside the code**: the definition (sum of all ÷ count), a hand calculation, or a known source. If expected = actual is derived from the code, a test can never fail | OPEN — D1.2 D2 verification skipped at my request; D2 close-out Q3 asked for the value of `7 / 2` and it was skipped again. Recheck in D3 (a loop with a known answer) and D16. **D3 Step 1:** value given (142 ✓) for the first time; method still came from the code's own check, not an independent count. **D3 Step 3:** 210 used ✓ (given by Claude after the hint confusion). **D3 Step 4:** asked for a new list worked out by hand — reused the known list instead. **D3 close-out: the cost made concrete** — no expected value written, so `validAverage` printed 1.714 instead of 4.0 and was committed without anyone noticing. **D3 remediation:** expected values written first for all three checks ✓ (`ratingLabel(3.0)` → Average was my own). Improving — retire after one fully independent case in D4 |
+| 2026-10-26 | Expected values | Gave "expected by hand = 3" for `averageRating([4,3,5,4])` — the same as the buggy output; the correct value is 16 / 4 = 4.0 | Likely computed the "expected" by following the code (skipping the first item) instead of from the definition of an average — which copies the bug into the check | An expected value must come from **outside the code**: the definition (sum of all ÷ count), a hand calculation, or a known source. If expected = actual is derived from the code, a test can never fail | OPEN — D1.2 D2 verification skipped at my request; D2 close-out Q3 asked for the value of `7 / 2` and it was skipped again. Recheck in D3 (a loop with a known answer) and D16. **D3 Step 1:** value given (142 ✓) for the first time; method still came from the code's own check, not an independent count. **D3 Step 3:** 210 used ✓ (given by Claude after the hint confusion). **D3 Step 4:** asked for a new list worked out by hand — reused the known list instead. **D3 close-out: the cost made concrete** — no expected value written, so `validAverage` printed 1.714 instead of 4.0 and was committed without anyone noticing. **D3 remediation:** expected values written first for all three checks ✓ (`ratingLabel(3.0)` → Average was my own). Improving — retire after one fully independent case in D4. ✅ **RETIRED 2026-10-29**: D4 close-out — my own list and my own test (odd), expected `[3,1,9]` written before running, matched |
 | 2026-10-25 | Compiler vs runtime | Described compile-time vs runtime *errors* when asked to define a *compiler* vs a *runtime*; gave syntax-only examples | Reasons from error symptoms rather than the machinery producing them. `int x = "hello"` is valid syntax, so a syntax-only model cannot explain why it is caught early | Compiler = translates source once, before execution. Runtime = machinery alive during execution. Syntax and type errors are both compile-time, from different stages: parser, then type checker | ✅ **Defined correctly in D1.1** (translator / backstage crew, 4/5). Parser-vs-type-checker part → D1.2. Recheck about 3 sessions later |
 
 ---
@@ -1396,6 +1409,23 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 
 ### Next
 - D3 — control flow.
+
+## 2026-10-29 — D4 functions → **D4 DONE**
+
+### Learned
+- Positional vs named vs optional parameters, `required`, defaults; arrow functions; functions as values and function types (`bool Function(int)`); closures capture the *variable*, each `makeCounter()` call gets its own; loop closures capture each round's `i`; `void` results can't be used (`use_of_void_result`); `Never` always throws.
+
+### Implemented
+- `formatMovie`, `keepWhere`, `makeViewCounter` in `dart_basics/lib`.
+
+### Debugged
+- `formatMovie` added two spaces whether or not a rating was shown → moved the space inside the ternary.
+
+### Process
+- The one-go lesson again skipped the template and expected values; the close-out recovered both, and the **expected-value habit is retired** (own list, own test, written first).
+
+### Next
+- D5 — collections. Commit the close-out fixes.
 
 ## 2026-10-27 → 2026-10-29 — D3 control flow → **D3 DONE**
 

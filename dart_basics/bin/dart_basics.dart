@@ -37,8 +37,8 @@ void main(List<String> arguments) {
   print(dart_basics.formatMovie('Dune', year: 2021, rating: 4.5));
   print(dart_basics.formatMovie('Arrival', year: 2016));
 
-  print(dart_basics.keepWhere([5, 2, 4, 1, 3], (rating) => rating >= 4));
-  print(dart_basics.keepWhere([5, 2, 4, 1, 3], (rating) => rating % 2 == 0));
+  print(dart_basics.keepWhere([3, 8, 1, 6, 9, 2], (rating) => rating >= 4));
+  print(dart_basics.keepWhere([3, 8, 1, 6, 9, 2], (rating) => rating % 2 == 1));
 
   var duneCounter = dart_basics.makeViewCounter();
   var arrivalCounter = dart_basics.makeViewCounter();
@@ -51,6 +51,4 @@ void main(List<String> arguments) {
 
   print(duneCounter());
   print(arrivalCounter());
-
-  // print(dart_basics.formatMovie('Arrival'));
 }
