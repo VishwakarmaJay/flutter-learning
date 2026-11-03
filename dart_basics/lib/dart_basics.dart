@@ -115,3 +115,46 @@ int Function() makeViewCounter() {
     return count;
   };
 }
+
+Map<String, double> averagesByMovie(Map<String, List<int>> data) {
+  if (data.isEmpty) {
+    return {};
+  }
+
+  Map<String, double> result = {};
+
+  for (var entry in data.entries) {
+    result[entry.key] = averageRating(entry.value);
+  }
+
+  return result;
+}
+
+List<String> topMovies(Map<String, double> averages, double minimum) {
+  if (averages.isEmpty) {
+    return [];
+  }
+
+  List<String> result = averages.entries
+      .where((entry) => entry.value >= minimum)
+      .map((entry) => entry.key)
+      .toList();
+
+  return result;
+}
+
+Set<String> uniqueGenres(List<String> tags) {
+  if (tags.isEmpty) {
+    return {};
+  }
+
+  Set<String> result = {};
+
+  result = tags.toSet();
+
+  return result;
+}
+
+int totalRatingsCount(Map<String, List<int>> data) {
+  return data.values.fold(0, (s, r) => s + r.length);
+}
