@@ -37,7 +37,7 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 # Current Position
 
 **Track:** 1 — Dart Foundations
-**Topic:** ✅ D0–D4 · ✅ **D5 DONE** (2026-11-03) · next: **D6 — null safety** (warm-up: explain in one line why the fixed benchmark is fair). Uncommitted: all D5 work — nothing committed since 2026-10-29
+**Topic:** ✅ D0–D5 DONE · 🔄 **D6 — null safety**: one-go lesson issued 2026-11-03; answers arrive one part at a time (Parts 0–5). D5 code and tracker committed in `641071d` (2026-11-03); since then only this tracker has uncommitted edits
 **Notes:** per-unit study notes live in `notes/`. D0 → [`notes/D0-toolchain-and-first-run.md`](notes/D0-toolchain-and-first-run.md) (created on request 2026-10-25)
 **Clean slate:** quiz history cleared and all mastery reset on 2026-10-25 at my request. Nothing is assumed learned.
 **Revise (spaced):** expected values — ✅ **retired 2026-10-29** (own list, own test, expected written first) · AOT = compiled *before* running — corrected 2026-10-26; recheck about 3 sessions later · compiler vs runtime — defined 2026-10-26, recheck about 3 sessions later · hot reload vs hot restart — ✅ passed its recheck (D2 close-out Q4); retire after one more · per-platform embedder — **corrected** in close-out Q1 (4/5); recheck about 1 week later · why an error is runtime, by mechanism rather than label
@@ -51,8 +51,11 @@ Never tick all five automatically. A topic reaches `DONE` at **Explain + Impleme
 
 ### Not yet demonstrated — do not assume
 
-- Everything. The track restarts at D0 with every mastery box empty.
-- No Dart has been written yet; `learning/` is the untouched `flutter create` scaffold.
+*Updated 2026-11-18 — this section still described the 2026-10-25 restart.*
+
+- Demonstrated so far: D0–D5 only (Explain + Implement + Debug per unit; see each unit). **Apply and Defend are not ticked for any unit.**
+- Everything from D6 onward is unproven — do not assume it.
+- Dart written so far lives in `dart_basics/` (console exercises, D1–D5). `learning/` is the `flutter create` scaffold with only the D0 edits (greeting, `kReleaseMode` text, SDK pin) — no Flutter app work yet.
 
 ### Prior experience — bridge, not a skip
 
@@ -260,7 +263,7 @@ The foundation track. No Flutter until Dart is real. Every unit is small on purp
 
 Evidence (D0.1): `lib/main.dart` 16 lines, no scaffold comments · `flutter analyze` no issues · format 0 changed · fresh `app-debug.apk` 17:38 after the 17:29 edit
 
-Remaining before DONE: explain each line of `main.dart` · `flutter run` walkthrough · debug/profile/release · hot reload vs restart · state SDK versions + path (**skipped in D0.1**) · `.fvmrc` decision · a deliberate failure diagnosed
+Remaining before DONE: none — closed 2026-10-26. Still partial (`[~]` above): explain every line of `main.dart`; state the SDK path (carried to the D1 warm-up — no answer recorded since). *(Line updated 2026-11-18; it still listed the pre-close-out items.)*
 
 The four-layer model taught 2026-10-25:
 
@@ -410,22 +413,26 @@ Mastery:
 [~] Debug      2/5 — fixed the stopwatch reset and the timed region myself; the best-case lookup (contains(5)) needed the solution
 [ ] Apply
 [ ] Defend
-``` (List/Set/Map, lazy iterables, map/where/fold/any/every, firstWhere/reduce on empty, spread/collection-if/for, list vs set lookup measured). The exercise applies `averageRating` to a `Map<String, List<int>>` of movies
+```
 
-- [ ] `List` — ordered, indexed
-- [ ] `Set` — unique, unordered
-- [ ] `Map` — key/value
-- [ ] `Iterable` and laziness; why `.map()` does nothing until iterated
-- [ ] `map`, `where`, `firstWhere`, `fold`, `reduce`, `any`, `every`
-- [ ] Spread (`...`), collection-`if`, collection-`for`
-- [ ] Choosing the right collection for a job
-- [ ] Linear search vs hash lookup — Big-O intuition
-- [ ] Exercise: same task with `List.contains` and a `Set`; reason about the cost difference
+Lesson scope: List/Set/Map, lazy iterables, map/where/fold/any/every, firstWhere/reduce on empty, spread/collection-if/for, list vs set lookup measured. The exercise applies `averageRating` to a `Map<String, List<int>>` of movies.
+
+Checklist ticked 2026-11-18 from the evidence already recorded in this unit's quiz rows and session log (it had been left blank when D5 was marked `DONE`):
+
+- [x] `List` — ordered, indexed (exercise; remediation Q4)
+- [x] `Set` — unique, unordered (`uniqueGenres`; remediation Q4)
+- [x] `Map` — key/value (`averagesByMovie` over `.entries`; remediation Q4 `Map<movieId, Movie>`)
+- [x] `Iterable` and laziness; why `.map()` does nothing until iterated (P2 order ✓; remediation Q5 "a map itself isn't iterable")
+- [~] `map`, `where`, `firstWhere`, `fold`, `reduce`, `any`, `every` — `where`/`map`/`toList` (`topMovies`) and `fold` (`totalRatingsCount`) ✓; `reduce` on empty crashed and the crash was pasted rather than explained; no evidence for `firstWhere`, `any`, `every`
+- [ ] Spread (`...`), collection-`if`, collection-`for` — taught; no exercise evidence
+- [x] Choosing the right collection for a job (P1 wrong → corrected in remediation: `Map<userId, Set<movieId>>`)
+- [~] Linear search vs hash lookup — Big-O intuition — List ~251 ms vs Set 0 ms measured, but on the benchmark Claude fixed; "why the fixed benchmark is fair" is the pending D6 warm-up
+- [~] Exercise: same task with `List.contains` and a `Set`; reason about the cost difference — two timing bugs fixed myself; final version written by Claude on request
 
 ---
 
 ## D6. Null safety
-**Status:** `TODO`
+**Status:** `IN PROGRESS` — one-go lesson issued 2026-11-03 (format: one-go lesson, step answers). Exercise adds `averageRatingOrNull` (`double?` = "no reviews", replacing the 0.0 stand-in) and `ratingCount` via `?.` + `??`. Also covers `Object?` (moved from D2)
 
 - [ ] Nullable (`String?`) vs non-nullable (`String`)
 - [ ] `?.`, `??`, `??=`
@@ -1001,7 +1008,7 @@ Record the **pattern**, not the individual bug.
 |---|---|---|---|---|---|
 | P0 | Versions | Verify real SDK and package versions before any version-sensitive lesson | Prevents invalid snippets and API mismatches | Ongoing | ✅ VERIFIED 2026-10-25 — Flutter 3.38.3 / Dart 3.10.1; `learning/pubspec.lock` resolved |
 | P1 | Toolchain | Android licences not accepted | Blocked all Android builds | D0 | ✅ RESOLVED 2026-10-25 — doctor `[✓]`, debug APK built |
-| P2 | Source control | `learning/` is untracked; the baseline is not committed | Assignment 0 exists to create a *reproducible* baseline; an uncommitted one cannot be returned to | D1 | ⚠️ OPEN — `git add -n` dry run confirms 66 files, zero leaks from `build/`, `.dart_tool/`, `.idea/` |
+| P2 | Source control | `learning/` is untracked; the baseline is not committed | Assignment 0 exists to create a *reproducible* baseline; an uncommitted one cannot be returned to | D1 | ✅ RESOLVED 2026-10-25 — baseline committed in `2a6c9c5` (65 files under `learning/`; see D0). Status corrected 2026-11-18 |
 | P2 | Toolchain | No `.fvmrc`; Flutter resolves via the FVM global default | `pubspec.yaml` pins the Dart constraint but nothing pins the Flutter SDK — `flutter upgrade` would silently move the project | D1 | ✅ RESOLVED 2026-10-26 — pinned 3.38.3 (`36e2d66`). **Caveat:** plain `flutter` in the terminal still uses the global default; only `fvm flutter …` and VS Code honour the pin |
 | P2 | Project | `learning/` is still the untouched `flutter create` scaffold | No learner-written Dart exists yet | D1 | OPEN |
 | P3 | Source control | 5.1 MB `dart_basics_exe` committed in `e1d8324`, removed in `5fdd262` — **still in history and pushed to `origin/main`**; `dart_basics/.gitignore` still doesn't ignore it | Removing a file in a later commit doesn't remove it from history (the same lesson as the backend `.env`); every clone carries the 5 MB. Not a secret, so it's bloat, not a leak | D1.2 | ⚠️ PARTIAL — ignore rule added 2026-10-26 (`dart_basics_exe`, verified with `git check-ignore`). The blob stays in history; rewriting it needs a force-push — optional, my call, not recommended for 5 MB of non-secret data |
@@ -1036,6 +1043,7 @@ Only facts that change implementation. Recheck when the SDK or package changes.
 | 2026-10-27 | switch / do-while (Dart 3.10.1) | A switch *statement* case with a body doesn't fall through and needs no `break` (`case 3: print('three'); case 4: …` prints only `three`); empty cases still group (`case 1: case 2: return 'Poor';`). `do { … } while (n < 5)` with `n = 10` runs the body once. `break` leaves the loop; `continue` skips to the next round | Dart SDK upgrade |
 | 2026-10-29 | Functions (Dart 3.10.1) | Named params with defaults and `required` work; a missing required named arg → compile error `missing_required_argument`. Optional positional `[int? year]` works. Closures: two counters from `makeCounter()` are independent (`1, 2, 1`); a closure created in `for (var i …)` captures **that round's** `i` (prints 0, 1, 2 — like TS `let`, unlike JS `var`); a closure sees the variable's *current* value (`x` changed to 99 after the closure was made → prints 99). `ratings.where((r) => r >= 4)` and a tear-off `ratings.map(twice)` work. Using a `void` result → `use_of_void_result`. A `Never` function that throws is caught by `try`/`catch` | Dart SDK upgrade |
 | 2026-10-30 | Collections (Dart 3.10.1) | `{'drama','scifi','drama'}` → `{drama, scifi}` + analyzer warning `equal_elements_in_set`. `ages['Bob']` → `null`; `ages['Jay'] + 1` → compile error `unchecked_use_of_nullable_value` (lookup type is `int?`). `.map(...)` is lazy: nothing runs until iterated, and **re-runs on every iteration** (`.first` twice → mapped twice). `print(ratings.fold(0, (s, r) => s + r))` → compile error (`T` inferred as `Object?` from `print`'s parameter); `int total = ratings.fold(...)` or `fold<int>(...)` works. `[].reduce` and `firstWhere` with no match → runtime `Bad state: No element`. Collection if/for/spread ✓. Measured: 2000 × `contains` on 200 000 items — List 418 ms, Set 0 ms | Dart SDK upgrade |
+| 2026-11-03 | Null safety (Dart 3.10.1) | `String name = null` → `invalid_assignment`; `maybe.length` on `String?` → `unchecked_use_of_nullable_value`; `Object o = null` → `invalid_assignment` (`Object?` accepts null). `?.` → `null`; `??` default; `??=` assigns only if null; `(ages['Bob'] ?? 0) + 1` → 1; `if (year != null) year + 1` promotes a local. **Analyzer-silent runtime failures:** `missing! + 1` → `Null check operator used on a null value`; a top-level `late` read before set → `LateInitializationError: Field 'loaded' has not been initialized.`; `dynamic d; d.length` → `NoSuchMethodError … called on null`. A `late` *local* that's definitely unassigned is caught at compile time (`definitely_unassigned_late_local_variable`) | Dart SDK upgrade |
 | 2026-10-23 | Riverpod codegen | `@riverpod` code generation is optional; docs warn it adds build steps. Let the installed version and existing setup decide | Riverpod upgrade |
 | 2026-10-23 | Dart web interop | `dart:html` and legacy JS interop are deprecated; prefer `package:web` and `dart:js_interop` | Dart SDK upgrade or web work |
 | 2026-10-23 | Play Console | Personal accounts created after 2023-11-13 need ≥12 testers opted in for a continuous 14-day closed test before production access | Before any release lab |
@@ -1439,6 +1447,7 @@ Explain 4/5 · Implement 2/5 · Debug 3/5 — all three evidenced, so D0 → `DO
 
 ### Open
 - Nothing committed since 2026-10-29. `bin/` has an unused import (the D5 calls are commented out).
+- *(Noted 2026-11-18: D5 work was committed later on 2026-11-03 as `641071d`.)*
 
 ### Next
 - D6 — null safety. Warm-up: why the fixed benchmark is fair.
