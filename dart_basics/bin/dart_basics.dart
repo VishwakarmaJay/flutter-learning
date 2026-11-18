@@ -52,12 +52,12 @@ void main(List<String> arguments) {
   // print(duneCounter());
   // print(arrivalCounter());\
 
-  // final movieRatings = {
-  //   'Dune': [5, 4, 5],
-  //   'Arrival': [4, 4],
-  //   'Cats': <int>[],
-  //   'Tenet': [3, 2, 4],
-  // };
+  final movieRatings = {
+    'Dune': [5, 4, 5],
+    'Arrival': [4, 4],
+    'Cats': <int>[],
+    'Tenet': [3, 2, 4],
+  };
 
   // var ratings = dart_basics.averagesByMovie(movieRatings);
 
@@ -102,4 +102,15 @@ void main(List<String> arguments) {
   // });
   // print('start');
   // print(r.length);
+
+  print(
+    "${dart_basics.averageRatingOrNull([5, 4, 5])} ${dart_basics.ratingLabelFor(dart_basics.averageRatingOrNull([5, 4, 5]))}",
+  );
+  print(
+    "${dart_basics.averageRatingOrNull([])} ${dart_basics.ratingLabelFor(dart_basics.averageRatingOrNull([]))}",
+  );
+
+  print(
+    "${dart_basics.ratingCount(movieRatings, 'Dune')} ${dart_basics.ratingCount(movieRatings, 'Unknown')}",
+  );
 }

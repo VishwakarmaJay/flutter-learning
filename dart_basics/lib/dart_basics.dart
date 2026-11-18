@@ -158,3 +158,33 @@ Set<String> uniqueGenres(List<String> tags) {
 int totalRatingsCount(Map<String, List<int>> data) {
   return data.values.fold(0, (s, r) => s + r.length);
 }
+
+double? averageRatingOrNull(List<int> ratings) {
+  if (ratings.isEmpty) {
+    return null;
+  }
+
+  var total = 0;
+  for (var rating in ratings) {
+    total += rating;
+  }
+  return total / ratings.length;
+}
+
+String ratingLabelFor(double? average) {
+  if (average == null) {
+    return 'No review';
+  } else if (average >= 4.5) {
+    return 'Excellent';
+  } else if (average >= 3.5) {
+    return 'Good';
+  } else if (average >= 2.5) {
+    return 'Average';
+  } else {
+    return 'Poor';
+  }
+}
+
+int ratingCount(Map<String, List<int>> data, String title) {
+  return data[title]?.length ?? 0;
+}
