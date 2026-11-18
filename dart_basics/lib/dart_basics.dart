@@ -174,15 +174,9 @@ double? averageRatingOrNull(List<int> ratings) {
 String ratingLabelFor(double? average) {
   if (average == null) {
     return 'No review';
-  } else if (average >= 4.5) {
-    return 'Excellent';
-  } else if (average >= 3.5) {
-    return 'Good';
-  } else if (average >= 2.5) {
-    return 'Average';
-  } else {
-    return 'Poor';
   }
+
+  return ratingLabel(average);
 }
 
 int ratingCount(Map<String, List<int>> data, String title) {
